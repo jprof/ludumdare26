@@ -8,6 +8,9 @@ build:
 	cp index.html $(OUTDIR)/.
 	coffee --compile --output $(OUTDIR)/lib coffee/
 
+toServer: build
+	scp -r out/* ludumdare@tourian:~/public_html/$(USER)/.
+
 .PHONY: build
 
 clean:
