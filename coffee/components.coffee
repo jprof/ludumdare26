@@ -24,7 +24,8 @@ Crafty.c "Enemy",
 # Moves along a horizontal line
 # you define a starting point and define its length
 # (negative goes to left of starting point, positive to right
-#
+# if endX < start, config = 'left' i.e. intially goe from
+# right to left
 
 Crafty.c "Rat",
   init: () ->
@@ -33,7 +34,7 @@ Crafty.c "Rat",
     @color 'gray'
     @speed = 1
     @dir = 1
-
+    @config = 'right'
     #how many frames to pause at ends of path
     @MAX_PAUSE = 20 
     @pauseCounter = 0 #Fix this
@@ -42,30 +43,51 @@ Crafty.c "Rat",
     @startX = @x
     @endX = @startX + dist
     
-    #startX should always be to the left
-    #of endX
     if @endX < @startX
-      temp = @startX
-      @startX = @endX
-      @endX = temp
+      @dir = -1
+      @config = 'left'
 
     console.log("current position: #{@x},#{@y}")
     console.log("@startX: #{@startX}")
     console.log("@endX: #{@endX}")
     return
 
-  _enterframe: () ->
-    if (@x < @startX) or (@x > @endX)
-      if @pauseCounter < @MAX_PAUSE 
-        @color 'pink'
-        @pauseCounter += 1 
-      else
-        @pauseCounter = 0
-        @color 'gray'
-        @dir *= -1
-        @x += @dir * @speed
-     else
-        @x += @dir * @speed
+  _boundCheck: () ->
+    if @config == 'left' and @dir == -1 and @x <= @endX
+      return 'left'
+    else if @config == 'right' and @dir == -1 and @x <= @startX
+      return 'left'
+    else if @config == 'left' and @dir == 1 and @x >= @startX
+      return 'right'
+    else if @config == 'right' and @dir == 1 and @x >= @endX
+      return 'right'
 
+    return 'inbetween'
+    
+  _resetAndReverse: () ->
+      #reverse direction and move a 'step'
+      @color 'gray'
+      @pauseCounter = 0
+      @dir *= -1
+      @x += @speed
+
+
+
+  _wait: (bound, color) ->
+    @color color
+    if @pauseCounter < @MAX_PAUSE
+      @pauseCounter += 1
+    else
+      @_resetAndReverse()
+    return
+
+
+  _enterframe: () ->
+    b = @_boundCheck()
+
+    switch b
+      when 'left'  then @_wait('left','pink')
+      when 'right' then @_wait('right','red')
+      else @x += @dir * @speed
     return
      

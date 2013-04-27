@@ -32,4 +32,4 @@ Crafty.scene "main", () ->
 
     @rat = Window.rat = Crafty.e 'Rat'
     @rat.attr x: 200, y: 200, w:20, h:20
-    @rat.setPathLength -100
+    @rat.setPathLength 100
