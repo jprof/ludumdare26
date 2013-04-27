@@ -36,7 +36,7 @@ Crafty.c "Rat",
     @dir = 1
     @config = 'right'
     #how many frames to pause at ends of path
-    @MAX_PAUSE = 20 
+    @MAX_PAUSE = 20
     @pauseCounter = 0 #Fix this
   
   setPathLength: (dist) ->
@@ -63,13 +63,14 @@ Crafty.c "Rat",
       return 'right'
 
     return 'inbetween'
-    
+
   _resetAndReverse: () ->
-      #reverse direction and move a 'step'
-      @color 'gray'
-      @pauseCounter = 0
-      @dir *= -1
-      @x += @speed
+    #reverse direction and move a 'step'
+    @color 'gray'
+    @pauseCounter = 0
+    @dir *= -1
+    @x += @speed
+    return
 
 
 
@@ -90,4 +91,4 @@ Crafty.c "Rat",
       when 'right' then @_wait('right','red')
       else @x += @dir * @speed
     return
-     
+
