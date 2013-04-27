@@ -35,3 +35,7 @@ Crafty.scene "main", () ->
     @obj = Crafty.e 'Obstacle'
     @obj.attr x: 120, y: 50, w:50, h:50
     @obj.color 'yellow'
+
+    @rat = Window.rat = Crafty.e 'Rat'
+    @rat.attr x: 200, y: 200, w:20, h:20
+    @rat.setPathLength 100
