@@ -23,10 +23,6 @@ Crafty.scene "main", () ->
     console.log "main"
 
     @player = Window.playerEntity = Crafty.e 'PlayerCharacter'
-    #@player.attr x:@STAGE_WIDTH/2, y:@STAGE_WIDTH/2, w:20, h:20
-    @player.attr x: 50, y: 50, w:20, h:20
-    @player.color 'blue'
-
 
     @enemySquare = Crafty.e 'Enemy'
     randX = Crafty.math.randomInt(0,@STAGE_WIDTH-20)
