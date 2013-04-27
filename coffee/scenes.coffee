@@ -29,3 +29,7 @@ Crafty.scene "main", () ->
     randY = Crafty.math.randomInt(0,@STAGE_HEIGHT-20)
     @enemySquare.attr x: 400, y:400, w:20, h:20
     @enemySquare.color 'red'
+
+    @rat = Window.rat = Crafty.e 'Rat'
+    @rat.attr x: 200, y: 200, w:20, h:20
+    @rat.setPathLength -100
