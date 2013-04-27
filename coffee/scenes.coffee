@@ -29,3 +29,7 @@ Crafty.scene "main", () ->
     randY = Crafty.math.randomInt(0,@STAGE_HEIGHT-20)
     @enemySquare.attr x: 400, y:400, w:20, h:20
     @enemySquare.color 'red'
+
+    @obj = Crafty.e 'Obstacle'
+    @obj.attr x: 120, y: 50, w:50, h:50
+    @obj.color 'yellow'
