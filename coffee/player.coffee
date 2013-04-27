@@ -25,5 +25,7 @@ Crafty.c 'PlayerCharacter',
   _enterframe: () ->
     if @frame % 60 == 30
       @movedThisTick = false
+    if @frame % 60 == 55
+      Crafty.audio.play "drum"
     @frame++
     return
