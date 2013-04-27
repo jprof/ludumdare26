@@ -4,7 +4,7 @@ OUTDIR=out
 build:
 	mkdir -p $(OUTDIR)/lib
 	cp -r lib/* $(OUTDIR)/lib/
-	cp -r assets/ $(OUTDIR)/assets/
+	cp -r assets/* $(OUTDIR)/assets/
 	cp index.html $(OUTDIR)/.
 	coffee --compile --output $(OUTDIR)/lib coffee/
 
