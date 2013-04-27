@@ -22,6 +22,8 @@ Crafty.scene "load", () ->
 Crafty.scene "main", () ->
     console.log "main"
 
+    @gameMaster = Crafty.e 'GameMaster'
+
     @player = Window.playerEntity = Crafty.e 'PlayerCharacter'
 
     @enemySquare = Crafty.e 'Enemy'
