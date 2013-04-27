@@ -16,6 +16,12 @@ Crafty.c 'PlayerCharacter',
     @color 'blue'
     return
 
+  getX: () ->
+    return @x
+
+  getY: () ->
+    return @y
+
   _keydown: (e) ->
     if not @movedThisTick
       # 0 < accuracy < 1; higher is better
