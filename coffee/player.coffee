@@ -20,10 +20,10 @@ Crafty.c 'PlayerCharacter',
         when 38 then @y -= accuracy
         when 40 then @y += accuracy
       @movedThisTick = true
-      return
+    return
 
   _enterframe: () ->
-    if @frame % 30
+    if @frame % 60 == 30
       @movedThisTick = false
     @frame++
     return
