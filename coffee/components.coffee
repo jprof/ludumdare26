@@ -72,14 +72,23 @@ Crafty.c 'GameMaster',
     return
 
   _pushEnemy: (e) ->
+    speed = 400
+
     enemy = Crafty(e)
-    speed = 40
+    
     px = Window.playerEntity.getX()
     py = Window.playerEntity.getY()
-    ang = Math.atan2((py-enemy.getY()),(px-enemy.getX()))
+
+    ex = enemy.getX()
+    ey = enemy.getY()
     
-    enemy.x -= speed * Math.cos(ang)
-    enemy.y -= speed * Math.sin(ang)
+    d = 10 / (1 + Crafty.math.distance px, py, ex, ey)
+    console.log "displacement: #{d}"
+
+    ang = Math.atan2((py-ey),(px-ex))
+    
+    enemy.x -= speed * d * Math.cos(ang)
+    enemy.y -= speed * d * Math.sin(ang)
 
 
     
