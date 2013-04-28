@@ -54,6 +54,7 @@ Crafty.scene "main", () ->
     randY = Crafty.math.randomInt(0,@STAGE_HEIGHT-20)
     @enemySquare.attr x: 400, y:400, w:20, h:20
     @enemySquare.color 'red'
+    buildBoundaries window
 
     @obj = Crafty.e 'Obstacle'
     @obj.attr x: 120, y: 50, w:50, h:50
@@ -62,3 +63,41 @@ Crafty.scene "main", () ->
     @rat = Window.rat = Crafty.e 'Rat'
     @rat.attr x: 200, y: 200, w:20, h:20
     @rat.setPathLength 100
+
+# Don't let anything that obstacle cares about get off the screen!
+buildBoundaries = (game) ->
+  points = [
+    {
+      # Top
+      x: -game.STAGE_WIDTH / 2,
+      y: -game.STAGE_HEIGHT,
+      w: game.STAGE_WIDTH * 2,
+      h: game.STAGE_HEIGHT
+    },
+    {
+      # Left
+      x: -game.STAGE_WIDTH,
+      y: -game.STAGE_HEIGHT / 2,
+      w: game.STAGE_WIDTH,
+      h: game.STAGE_HEIGHT * 2
+    },
+    {
+      # Right
+      x: game.STAGE_WIDTH,
+      y: -game.STAGE_HEIGHT / 2,
+      w: game.STAGE_WIDTH,
+      h: game.STAGE_HEIGHT * 2
+    },
+    {
+      # Bottom
+      x: -game.STAGE_WIDTH / 2,
+      y: game.STAGE_HEIGHT,
+      w: game.STAGE_WIDTH * 2,
+      h: game.STAGE_HEIGHT
+    }
+  ]
+
+  for point in points
+    wall = Crafty.e "Obstacle"
+    wall.attr point
+  return

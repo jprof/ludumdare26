@@ -6,3 +6,5 @@ window.Game =
     Crafty.background 'green'
 
     Crafty.scene "load"
+
+
