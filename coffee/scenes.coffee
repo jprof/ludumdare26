@@ -26,11 +26,14 @@ Crafty.scene "main", () ->
 
     @player = Window.playerEntity = Crafty.e 'PlayerCharacter'
 
+    Window.enemies = []
+
     @enemySquare = Crafty.e 'Enemy'
     randX = Crafty.math.randomInt(0,@STAGE_WIDTH-20)
     randY = Crafty.math.randomInt(0,@STAGE_HEIGHT-20)
     @enemySquare.attr x: 400, y:400, w:20, h:20
     @enemySquare.color 'red'
+    Window.enemies.push @enemySquare  
 
     @obj = Crafty.e 'Obstacle'
     @obj.attr x: 120, y: 50, w:50, h:50

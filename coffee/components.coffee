@@ -19,12 +19,19 @@ Crafty.c "Enemy",
     @x += @speed * Math.cos(ang)
     @y += @speed * Math.sin(ang)
     return
+  
+  getX: () ->
+    return @x
+  
+  getY: () ->
+     return @y
 
 Crafty.c 'GameMaster',
   init: () ->
     @bind "KeyDown", @_keydown
-
-  _keydown: (e) ->
+  
+   _keydown: (e) ->
+    #alert(e.key)
     switch e.key
       # e
       when 69 then @spawnEnemy()
@@ -32,6 +39,8 @@ Crafty.c 'GameMaster',
       when 79 then @spawnObstacle()
       # r
       when 82 then @spawnRat()
+      # b
+      when 66 then @blowAway()
 
 
   spawnEnemy: () ->
@@ -55,6 +64,24 @@ Crafty.c 'GameMaster',
     @rat = Crafty.e 'Rat'
     @rat.attr x: randX, y: randY, w: 20, h: 20
     @rat.setPathLength pathLength
+
+  #push all the enemies away from the player
+  blowAway: () ->
+
+    @_pushEnemy enemy for enemy in Crafty("Enemy")
+    return
+
+  _pushEnemy: (e) ->
+    enemy = Crafty(e)
+    speed = 40
+    px = Window.playerEntity.getX()
+    py = Window.playerEntity.getY()
+    ang = Math.atan2((py-enemy.getY()),(px-enemy.getX()))
+    
+    enemy.x -= speed * Math.cos(ang)
+    enemy.y -= speed * Math.sin(ang)
+
+
     
 #
 # Rat Component
