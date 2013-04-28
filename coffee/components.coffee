@@ -4,18 +4,24 @@
 #
 Crafty.c "Enemy",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision'
+    @requires 'Canvas, Color, 2D, Collision, ChasePlayer'
+
+
+# Behavior to chase after the player
+# You must set x,y,targetX,targetY for the entity 
+# in order for this to work
+Crafty.c 'ChasePlayer',
+  init: () ->
+    @requires '2D'
     @bind 'EnterFrameActive', @_enterframeActive
     @speed = .25
     @color 'red'
-    @targetX = 900
-    @targetY = 900
     return
 
   # enemies move every frame
   _enterframeActive: () ->
-    px = Window.playerEntity.getX()
-    py = Window.playerEntity.getY()
+    px = Window.playerEntity.x
+    py = Window.playerEntity.y
     ang = Math.atan2((py-@y),(px-@x))
     
     @targetX += @speed * Math.cos(ang)
@@ -25,22 +31,6 @@ Crafty.c "Enemy",
     @y += (@targetY - @y) * .2
     return
   
-  #position the enemy --use instead of attr
-  position: (x,y) ->
-    @targetX = @x = x
-    @targetY = @y = y
-    return
-
-  easeTo: (x,y) ->
-    @targetX = x
-    @targetY = y
-    return
-
-  getX: () ->
-    return @targetX
-  
-  getY: () ->
-     return @targetY
 
 Crafty.c 'GameMaster',
   init: () ->
@@ -63,8 +53,7 @@ Crafty.c 'GameMaster',
     randX = 800 * Math.random()
     randY = 600 * Math.random()
     @enemySquare = Crafty.e 'Enemy'
-    @enemySquare.attr w:20, h:20
-    @enemySquare.position randX, randY
+    @enemySquare.attr x:randX, y:randY, targetX: randX, targetY: randY, w:20, h:20
 
   spawnObstacle: () ->
     randX = 800 * Math.random()
@@ -75,85 +64,27 @@ Crafty.c 'GameMaster',
     @obstacle.attr x: randX, y: randY, w:randW, h:randH
 
   spawnRat: () ->
-    randX = 500 * Math.random()
+    randLeft = 750 * Math.random()
+    randRight = Crafty.math.randomNumber randLeft, 795
+
     randY = 600 * Math.random()
-    pathLength = 300 * Math.random()
+    randStartX = Crafty.math.randomNumber randLeft + 1, randRight - 1
+
     @rat = Crafty.e 'Rat'
-    @rat.attr x: randX, y: randY, w: 20, h: 20
-    @rat.setPathLength pathLength
-
-
-
+    @rat.attr x: randStartX, y: randY, w: 20, h: 20, left: randLeft, right: randRight
+    if randStartX < randRight
+      @rat.patrolState =  @rat.HorizontalPatrolStates.patrolRight
+    else 
+      @rat.patrolState = @rat.HorizontalPatrolStates.patrolLeft
     
+  
 #
 # Rat Component
-# Moves along a horizontal line
-# you define a starting point and define its length
-# (negative goes to left of starting point, positive to right
-# if endX < start, config = 'left' i.e. intially goe from
-# right to left
-
 Crafty.c "Rat",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision'
-    @bind 'EnterFrameActive', @_enterframeActive
+    @requires 'Canvas, Color, Collision, HorizontalPatrol'
     @color 'gray'
-    @speed = 1
-    @dir = 1
-    @config = 'right'
-    #how many frames to pause at ends of path
-    @MAX_PAUSE = 20
-    @pauseCounter = 0 #Fix this
-  
-  setPathLength: (dist) ->
-    @startX = @x
-    @endX = @startX + dist
-    
-    if @endX < @startX
-      @dir = -1
-      @config = 'left'
 
-    return
-
-  _boundCheck: () ->
-    if @config == 'left' and @dir == -1 and @x <= @endX
-      return 'left'
-    else if @config == 'right' and @dir == -1 and @x <= @startX
-      return 'left'
-    else if @config == 'left' and @dir == 1 and @x >= @startX
-      return 'right'
-    else if @config == 'right' and @dir == 1 and @x >= @endX
-      return 'right'
-
-    return 'inbetween'
-
-  _resetAndReverse: () ->
-    #reverse direction and move a 'step'
-    @color 'gray'
-    @pauseCounter = 0
-    @dir *= -1
-    @x += @speed
-    return
-
-
-
-  _wait: (bound, color) ->
-    @color color
-    if @pauseCounter < @MAX_PAUSE
-      @pauseCounter += 1
-    else
-      @_resetAndReverse()
-    return
-
-
-  _enterframeActive: () ->
-    b = @_boundCheck()
-
-    switch b
-      when 'left'  then @_wait('left','pink')
-      when 'right' then @_wait('right','red')
-      else @x += @dir * @speed
-    return
 
 
 Crafty.c 'Obstacle',
@@ -226,3 +157,67 @@ Crafty.c 'Freezable',
     switch @freezableState
       when @FreezableStates.idle then Crafty.trigger 'EnterFrameIdle'
       when @FreezableStates.active then Crafty.trigger 'EnterFrameActive'
+
+
+# Patrol on a horizontal line
+# You must set the following attributes:
+#   x:      initial x position
+#   y:      initial y position
+#   left:   leftmost x point of the patrol
+#   right:  rightmost x point of the patrol
+#   patrolState: initial state. 
+#     HorizontalPatrolStates.patrolRight start moving to the right
+#     HorizontalPatrolStates.patrolLeft  start moving to the left
+#
+# Example for a new rat on patrol:    
+#   @rat = Window.rat = Crafty.e 'Rat'
+#   @rat.attr x: 200, y: 200, w:20, h:20, left: 200, right: 300
+#   @rat.patrolState = @rat.HorizontalPatrolStates.patrolRight
+
+
+Crafty.c 'HorizontalPatrol',
+  HorizontalPatrolStates:
+    idleLeft: 0
+    idleRigt: 1
+    patrolLeft: 2 
+    patrolRight: 3
+
+  init: () ->
+    @requires '2D'
+    @speed = 1
+    @MAX_PAUSE = 20 #Number of frames to idle at endpoints
+    @pauseCounter = 0 #Fix this
+    @bind 'EnterFrameActive', @_enterframeActive
+  
+  bounds: (left,right) ->
+    @left = left
+    @right = right 
+    return
+
+  _wait: () ->
+    if @pauseCounter < @MAX_PAUSE
+      @pauseCounter += 1
+      return false
+    else
+      @pauseCounter = 0
+      return true
+
+  _enterframeActive: () ->
+    switch @patrolState
+      when @HorizontalPatrolStates.idleLeft
+        @patrolState = @HorizontalPatrolStates.patrolRight if @_wait()
+      when @HorizontalPatrolStates.idleRight
+        @patrolState = @HorizontalPatrolStates.patrolLeft if @_wait()
+      when @HorizontalPatrolStates.patrolLeft
+        if @x < @left
+          @patrolState = @HorizontalPatrolStates.idleLeft
+        else
+          @x -= @speed
+      when @HorizontalPatrolStates.patrolRight
+        if @x > @right
+          @patrolState = @HorizontalPatrolStates.idleRight
+        else
+          @x += @speed        
+
+
+
