@@ -90,3 +90,5 @@ Crafty.c 'PlayerCharacter',
       Crafty.trigger "PrizeGet"
       #Do something here
       hit.obj.destroy()
+    Crafty("LevelLoader").nextLevel()
+    return
