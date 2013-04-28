@@ -7,4 +7,3 @@ window.Game =
 
     Crafty.scene "load"
 
-
