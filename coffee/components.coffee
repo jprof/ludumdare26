@@ -4,7 +4,8 @@
 #
 Crafty.c "Enemy",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision, Freezable'
+    @requires 'Canvas, Color, 2D, Collision'
+    @bind 'EnterFrameActive', @_enterframeActive
     @speed = .25
     @color 'red'
     @targetX = 900
@@ -94,7 +95,8 @@ Crafty.c 'GameMaster',
 
 Crafty.c "Rat",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision, Freezable'
+    @requires 'Canvas, Color, 2D, Collision'
+    @bind 'EnterFrameActive', @_enterframeActive
     @color 'gray'
     @speed = 1
     @dir = 1
@@ -144,7 +146,7 @@ Crafty.c "Rat",
     return
 
 
-  _enterFrameActive: () ->
+  _enterframeActive: () ->
     b = @_boundCheck()
 
     switch b
@@ -208,15 +210,15 @@ Crafty.c 'Freezable',
   init: () ->
     @bind "KeyDown", @_keydown
     @bind "EnterFrame", @_enterframe
-    @freezableState = @FreezableStates.idle
+    @freezableState = @FreezableStates.frozen
     return
 
   _keydown: (e) ->
     switch @freezableState
-      when @FreezableStates.idle then @_keydownIdle && @_keydownIdle(e)
-      when @FreezableStates.active then @_keydownActive && @_keydownActive(e)
+      when @FreezableStates.idle then Crafty.trigger 'KeydownIdle', e
+      when @FreezableStates.active then Crafty.trigger 'KeydownActive', e
 
   _enterframe: () ->
     switch @freezableState
-      when @FreezableStates.idle then @_enterframeIdle && @_enterframeIdle()
-      when @FreezableStates.active then @_enterframeActive && @_enterframeActive()
+      when @FreezableStates.idle then Crafty.trigger 'EnterFrameIdle'
+      when @FreezableStates.active then Crafty.trigger 'EnterFrameActive'

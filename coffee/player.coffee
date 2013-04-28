@@ -1,6 +1,8 @@
 Crafty.c 'PlayerCharacter',
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision, Freezable'
+    @requires 'Canvas, Color, 2D, Collision'
+    @bind 'KeydownActive', @_keydownActive
+    @bind 'EnterFrameActive', @_enterframeActive
     @frame = 0
     @movedThisTick = false
     @framesPerTick = 60
