@@ -74,8 +74,8 @@ Crafty.c 'PlayerCharacter',
     px = @targetX
     py = @targetY
 
-    ex = enemy.getX()
-    ey = enemy.getY()
+    ex = enemy.x
+    ey = enemy.y
     
     #d = 10 / (1 + Crafty.math.distance px, py, ex, ey)
     d = Math.max worstCase, cap - Crafty.math.distance px, py, ex, ey

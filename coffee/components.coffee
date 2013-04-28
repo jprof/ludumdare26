@@ -4,18 +4,24 @@
 #
 Crafty.c "Enemy",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision'
+    @requires 'Canvas, Color, 2D, Collision, ChasePlayer'
+
+
+# Behavior to chase after the player
+# You must set x,y,targetX,targetY for the entity 
+# in order for this to work
+Crafty.c 'ChasePlayer',
+  init: () ->
+    @requires '2D'
     @bind 'EnterFrameActive', @_enterframeActive
     @speed = .25
     @color 'red'
-    @targetX = 900
-    @targetY = 900
     return
 
   # enemies move every frame
   _enterframeActive: () ->
-    px = Window.playerEntity.getX()
-    py = Window.playerEntity.getY()
+    px = Window.playerEntity.x
+    py = Window.playerEntity.y
     ang = Math.atan2((py-@y),(px-@x))
     
     @targetX += @speed * Math.cos(ang)
@@ -25,24 +31,7 @@ Crafty.c "Enemy",
     @y += (@targetY - @y) * .2
     return
   
-  #position the enemy --use instead of attr
-  position: (x,y) ->
-    @targetX = @x = x
-    @targetY = @y = y
-    return
 
-  easeTo: (x,y) ->
-    @targetX = x
-    @targetY = y
-    return
-
-  getX: () ->
-    return @targetX
-  
-  getY: () ->
-     return @targetY
-
- 
 Crafty.c 'GameMaster',
   init: () ->
     @bind "KeyDown", @_keydown
@@ -64,8 +53,7 @@ Crafty.c 'GameMaster',
     randX = 800 * Math.random()
     randY = 600 * Math.random()
     @enemySquare = Crafty.e 'Enemy'
-    @enemySquare.attr w:20, h:20
-    @enemySquare.position randX, randY
+    @enemySquare.attr x:randX, y:randY, targetX: randX, targetY: randY, w:20, h:20
 
   spawnObstacle: () ->
     randX = 800 * Math.random()
