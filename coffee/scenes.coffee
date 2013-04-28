@@ -5,7 +5,7 @@ DRUM_ASSETS =
     "assets/audio/ludum_beat.wav"
 ]
 
-ASSETS = [].concat DRUM_ASSETS
+ASSETS = ['assets/img/building.gif'].concat DRUM_ASSETS
 
 Crafty.scene "load", () ->
     console.log "loading start"
@@ -64,6 +64,13 @@ Crafty.scene "main", () ->
     # @obj.attr x: 120, y: 50, w:50, h:50
     # @obj.color 'yellow'
     # @obj.bind "PrizeGet", () -> @color "orange"
+
+    # @rat = Window.rat = Crafty.e 'Rat'
+    # @rat.attr x: 200, y: 200, w:20, h:20, left: 200, right: 300
+    # @rat.patrolState = @rat.HorizontalPatrolStates.patrolRight
+
+    # @building = Crafty.e 'Highrise'
+    # @building.attr x: 300, y: 100
 
     # @rat = Window.rat = Crafty.e 'Rat'
     # @rat.attr x: 200, y: 200, w:20, h:20, left: 200, right: 300

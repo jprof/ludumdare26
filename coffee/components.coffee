@@ -92,7 +92,6 @@ Crafty.c 'Obstacle',
     @requires 'Canvas, Color, 2D, Collision'
     @onHit "PlayerCharacter", @_onHit
     @onHit "Enemy", @_onHit
-    @color 'yellow'
     return
 
   _onHit: (targets) ->
@@ -130,6 +129,12 @@ Crafty.c 'Obstacle',
           target.obj.targetY = @y + @h
 
     return
+
+Crafty.c 'Highrise',
+  init: () ->
+    @requires 'Obstacle, Sprite, highrise'
+    @w = @h = 100
+    @color 'none'
 
 Crafty.c 'Prize',
   init: () ->
