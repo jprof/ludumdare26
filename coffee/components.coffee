@@ -30,12 +30,31 @@ Crafty.c 'GameMaster',
       when 69 then @spawnEnemy()
       # o
       when 79 then @spawnObstacle()
+      # r
+      when 82 then @spawnRat()
+
 
   spawnEnemy: () ->
     randX = 800 * Math.random()
     randY = 600 * Math.random()
     @enemySquare = Crafty.e 'Enemy'
     @enemySquare.attr x: randX, y:randY, w:20, h:20
+
+  spawnObstacle: () ->
+    randX = 800 * Math.random()
+    randY = 600 * Math.random()
+    randW = 60 * Math.random() + 40
+    randH = 60 * Math.random() + 40
+    @obstacle = Crafty.e 'Obstacle'
+    @obstacle.attr x: randX, y: randY, w:randW, h:randH
+
+  spawnRat: () ->
+    randX = 500 * Math.random()
+    randY = 600 * Math.random()
+    pathLength = 300 * Math.random()
+    @rat = Crafty.e 'Rat'
+    @rat.attr x: randX, y: randY, w: 20, h: 20
+    @rat.setPathLength pathLength
     
 #
 # Rat Component
@@ -65,9 +84,6 @@ Crafty.c "Rat",
       @dir = -1
       @config = 'left'
 
-    console.log("current position: #{@x},#{@y}")
-    console.log("@startX: #{@startX}")
-    console.log("@endX: #{@endX}")
     return
 
   _boundCheck: () ->
@@ -110,13 +126,6 @@ Crafty.c "Rat",
       else @x += @dir * @speed
     return
 
-  spawnObstacle: () ->
-    randX = 800 * Math.random()
-    randY = 600 * Math.random()
-    randW = 60 * Math.random() + 40
-    randH = 60 * Math.random() + 40
-    @obstacle = Crafty.e 'Obstacle'
-    @obstacle.attr x: randX, y: randY, w:randW, h:randH
 
 Crafty.c 'Obstacle',
   init: () ->
