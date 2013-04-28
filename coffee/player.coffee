@@ -46,7 +46,7 @@ Crafty.c 'PlayerCharacter',
     if @frame % @framesPerTick == @framesPerTick / 2
       @movedThisTick = false
     if @frame % @framesPerTick == @framesPerTick - 5
-      #Crafty.audio.play "drum"
+      Crafty.audio.play "drum"
       @color 'red'
     @frame++
     return
