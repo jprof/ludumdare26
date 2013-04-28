@@ -66,7 +66,7 @@ Crafty.c 'GameMaster',
 
 Crafty.c "Rat",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision Enemy'
+    @requires 'Canvas, Color, 2D, Collision'
     @bind "EnterFrame", @_enterframe
     @color 'gray'
     @speed = 1
