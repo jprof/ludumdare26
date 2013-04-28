@@ -56,7 +56,7 @@ Crafty.c 'GameMaster',
       # r
       when 82 then @spawnRat()
       # b
-      when 66 then @blowAway()
+      when 66 then Window.playerEntity.blowAway(1)
 
 
   spawnEnemy: () ->
@@ -82,31 +82,6 @@ Crafty.c 'GameMaster',
     @rat.attr x: randX, y: randY, w: 20, h: 20
     @rat.setPathLength pathLength
 
-  #push all the enemies away from the player
-  blowAway: () ->
-
-    @_pushEnemy enemy for enemy in Crafty("Enemy")
-    return
-
-  _pushEnemy: (e) ->
-    cap = 100
-    worstCase = 20
-    enemy = Crafty(e)
-    
-    px = Window.playerEntity.getX()
-    py = Window.playerEntity.getY()
-
-    ex = enemy.getX()
-    ey = enemy.getY()
-    
-    #d = 10 / (1 + Crafty.math.distance px, py, ex, ey)
-    d = Math.max worstCase, cap - Crafty.math.distance px, py, ex, ey
-    console.log "displacement: #{d}"
-
-    ang = Math.atan2((py-ey),(px-ex))
-    
-    enemy.targetX -= d * Math.cos(ang)
-    enemy.targetY -= d * Math.sin(ang)
 
 
     
