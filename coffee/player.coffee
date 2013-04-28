@@ -26,15 +26,15 @@ Crafty.c 'PlayerCharacter',
     if not @movedThisTick
       # 0 < accuracy < 1; higher is better
       accuracy = Math.abs(@frame % @framesPerTick - @framesPerTick / 2) * 2 / @framesPerTick
-      # left: 37
-      # right: 39
-      # up: 38
-      # down: 40
+      # left:  37 || 65
+      # right: 39 || 68
+      # up:    38 || 87
+      # down:  40 || 83
       switch e.key
-        when 37 then @targetX -= accuracy * @maxSpeed
-        when 39 then @targetX += accuracy * @maxSpeed
-        when 38 then @targetY -= accuracy * @maxSpeed
-        when 40 then @targetY += accuracy * @maxSpeed
+        when 37, 65 then @targetX -= accuracy * @maxSpeed
+        when 39, 68 then @targetX += accuracy * @maxSpeed
+        when 38, 87 then @targetY -= accuracy * @maxSpeed
+        when 40, 83 then @targetY += accuracy * @maxSpeed
       @movedThisTick = true
     return
 
@@ -46,7 +46,7 @@ Crafty.c 'PlayerCharacter',
     if @frame % @framesPerTick == @framesPerTick / 2
       @movedThisTick = false
     if @frame % @framesPerTick == @framesPerTick - 5
-      Crafty.audio.play "drum"
+      #Crafty.audio.play "drum"
       @color 'red'
     @frame++
     return
