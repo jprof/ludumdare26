@@ -20,9 +20,13 @@ Crafty.c 'ChasePlayer',
 
   # enemies move every frame
   _enterframeActive: () ->
-    px = Window.playerEntity.x
-    py = Window.playerEntity.y
-    ang = Math.atan2((py-@y),(px-@x))
+    px = Window.playerEntity.x + Window.playerEntity.w/2
+    py = Window.playerEntity.y + Window.playerEntity.h/2
+
+    ex = @x + @w/2
+    ey = @y + @h/2
+
+    ang = Math.atan2((py-ey),(px-ex))
     
     @targetX += @speed * Math.cos(ang)
     @targetY += @speed * Math.sin(ang)
