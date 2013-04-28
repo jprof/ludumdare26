@@ -150,7 +150,7 @@ Crafty.c 'Obstacle',
       dx = playerCenterX - objCenterX
       dy = playerCenterY - objCenterY
 
-      if playerCenterY < @h / @w * playerCenterX
+      if playerCenterY < @h / @w * (playerCenterX - objCenterX) + objCenterY
         if playerCenterY < -@h / @w * (playerCenterX - objCenterX) + objCenterY
           # top
           target.obj.y = @y - playerH
