@@ -42,6 +42,7 @@ Crafty.c "Enemy",
   getY: () ->
      return @targetY
 
+ 
 Crafty.c 'GameMaster',
   init: () ->
     @bind "KeyDown", @_keydown
@@ -75,26 +76,28 @@ Crafty.c 'GameMaster',
     @obstacle.attr x: randX, y: randY, w:randW, h:randH
 
   spawnRat: () ->
-    randX = 500 * Math.random()
+    randLeft = 750 * Math.random()
+    randRight = Crafty.math.randomNumber randLeft, 795
+
     randY = 600 * Math.random()
-    pathLength = 300 * Math.random()
+    randStartX = Crafty.math.randomNumber randLeft + 1, randRight - 1
+
     @rat = Crafty.e 'Rat'
-    @rat.attr x: randX, y: randY, w: 20, h: 20
-    @rat.setPathLength pathLength
-
-
-
+    @rat.attr x: randStartX, y: randY, w: 20, h: 20, left: randLeft, right: randRight
+    if randStartX < randRight
+      @rat.patrolState =  @rat.HorizontalPatrolStates.patrolRight
+    else 
+      @rat.patrolState = @rat.HorizontalPatrolStates.patrolLeft
     
+  
 #
 # Rat Component
 Crafty.c "Rat",
   init: () ->
     @requires 'Canvas, Color, Collision, HorizontalPatrol'
     @color 'gray'
-    @bind 'EnterFrameActive', @_enterframeActive
 
-  setDistance: (dist) ->
-    @setPathLength(dist)
+
 
 Crafty.c 'Obstacle',
   init: () ->
@@ -168,71 +171,65 @@ Crafty.c 'Freezable',
       when @FreezableStates.active then Crafty.trigger 'EnterFrameActive'
 
 
-# Moves along a horizontal line
-# you define a starting point and define its length
-# (negative goes to left of starting point, positive to right
-# if endX < start, config = 'left' i.e. intially goe from
-# right to left
+# Patrol on a horizontal line
+# You must set the following attributes:
+#   x:      initial x position
+#   y:      initial y position
+#   left:   leftmost x point of the patrol
+#   right:  rightmost x point of the patrol
+#   patrolState: initial state. 
+#     HorizontalPatrolStates.patrolRight start moving to the right
+#     HorizontalPatrolStates.patrolLeft  start moving to the left
+#
+# Example for a new rat on patrol:    
+#   @rat = Window.rat = Crafty.e 'Rat'
+#   @rat.attr x: 200, y: 200, w:20, h:20, left: 200, right: 300
+#   @rat.patrolState = @rat.HorizontalPatrolStates.patrolRight
 
-Crafty.c 'HorizontalPatrol',  
+
+Crafty.c 'HorizontalPatrol',
+  HorizontalPatrolStates:
+    idleLeft: 0
+    idleRigt: 1
+    patrolLeft: 2 
+    patrolRight: 3
+
   init: () ->
-    @requires '2D, Freezable'
+    @requires '2D'
     @speed = 1
-    @dir = 1
-    @config = 'right'
-    #how many frames to pause at ends of path
-    @MAX_PAUSE = 20
+    @MAX_PAUSE = 20 #Number of frames to idle at endpoints
     @pauseCounter = 0 #Fix this
+    @bind 'EnterFrameActive', @_enterframeActive
   
-  setPathLength: (dist) ->
-    @startX = @x
-    @endX = @startX + dist
-    
-    if @endX < @startX
-      @dir = -1
-      @config = 'left'
-
+  bounds: (left,right) ->
+    @left = left
+    @right = right 
     return
 
-  _boundCheck: () ->
-    if @config == 'left' and @dir == -1 and @x <= @endX
-      return 'left'
-    else if @config == 'right' and @dir == -1 and @x <= @startX
-      return 'left'
-    else if @config == 'left' and @dir == 1 and @x >= @startX
-      return 'right'
-    else if @config == 'right' and @dir == 1 and @x >= @endX
-      return 'right'
-
-    return 'inbetween'
-
-  _resetAndReverse: () ->
-    #reverse direction and move a 'step'
-    @color 'gray'
-    @pauseCounter = 0
-    @dir *= -1
-    @x += @speed
-    return
-
-
-  
-  _wait: (bound, color) ->
-    @color color
+  _wait: () ->
     if @pauseCounter < @MAX_PAUSE
       @pauseCounter += 1
+      return false
     else
-      @_resetAndReverse()
-    return
-
+      @pauseCounter = 0
+      return true
 
   _enterframeActive: () ->
-    console.log "enter frame"
-    b = @_boundCheck()
+    switch @patrolState
+      when @HorizontalPatrolStates.idleLeft
+        @patrolState = @HorizontalPatrolStates.patrolRight if @_wait()
+      when @HorizontalPatrolStates.idleRight
+        @patrolState = @HorizontalPatrolStates.patrolLeft if @_wait()
+      when @HorizontalPatrolStates.patrolLeft
+        if @x < @left
+          @patrolState = @HorizontalPatrolStates.idleLeft
+        else
+          @x -= @speed
+      when @HorizontalPatrolStates.patrolRight
+        if @x > @right
+          @patrolState = @HorizontalPatrolStates.idleRight
+        else
+          @x += @speed        
 
-    switch b
-      when 'left'  then @_wait('left','pink')
-      when 'right' then @_wait('right','red')
-      else @x += @dir * @speed
-    return
 
 
