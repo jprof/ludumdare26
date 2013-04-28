@@ -71,7 +71,7 @@ Crafty.c 'GameMaster',
     randStartX = Crafty.math.randomNumber randLeft + 1, randRight - 1
 
     @rat = Crafty.e 'Rat'
-    @rat.attr x: randStartX, y: randY, w: 20, h: 20, left: randLeft, right: randRight
+    @rat.attr x: randStartX, y: randY, left: randLeft, right: randRight
     if randStartX < randRight
       @rat.patrolState =  @rat.HorizontalPatrolStates.patrolRight
     else 
@@ -82,10 +82,29 @@ Crafty.c 'GameMaster',
 # Rat Component
 Crafty.c "Rat",
   init: () ->
-    @requires 'Canvas, Color, Collision, HorizontalPatrol'
-    @color 'gray'
+    @requires 'Canvas, Color, Collision, HorizontalPatrol, ratRight1, SpriteAnimation'
+    @w = 100
+    @h = 60
+    @color 'none'
+    @bind 'EnterFrameActive', @_ratEnterFrameActive
 
-
+  _ratEnterFrameActive: () ->
+    if @prevPatrolState != @patrolState
+      @stop()
+      switch @patrolState
+        when @HorizontalPatrolStates.idleLeft
+          @animate 'idleLeft', 0, 3, 1
+          @animate 'idleLeft', 25, 0
+        when @HorizontalPatrolStates.idleRight
+          @animate 'idleRight', 0, 2, 1
+          @animate 'idleRight', 25, 0
+        when @HorizontalPatrolStates.patrolLeft
+          @animate 'walkLeft', 0, 1, 3
+          @animate 'walkLeft', 25, -1
+        when @HorizontalPatrolStates.patrolRight
+          @animate 'walkRight', 0, 0, 3
+          @animate 'walkRight', 25, -1
+    @prevPatrolState = @patrolState
 
 Crafty.c 'Obstacle',
   init: () ->
@@ -184,13 +203,13 @@ Crafty.c 'HorizontalPatrol',
   HorizontalPatrolStates:
     idleLeft: 0
     idleRigt: 1
-    patrolLeft: 2 
+    patrolLeft: 2
     patrolRight: 3
 
   init: () ->
     @requires '2D'
     @speed = 1
-    @MAX_PAUSE = 20 #Number of frames to idle at endpoints
+    @MAX_PAUSE = 50 #Number of frames to idle at endpoints
     @pauseCounter = 0 #Fix this
     @bind 'EnterFrameActive', @_enterframeActive
   
