@@ -199,3 +199,8 @@ Crafty.c 'Obstacle',
           target.obj.targetY = @y + @h
 
     return
+
+Crafty.c 'Prize',
+  init: () ->
+    @requires "Canvas, 2D, Color, Collision"
+    return

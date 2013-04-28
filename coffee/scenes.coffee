@@ -61,10 +61,15 @@ Crafty.scene "main", () ->
     @obj = Crafty.e 'Obstacle'
     @obj.attr x: 120, y: 50, w:50, h:50
     @obj.color 'yellow'
+    @obj.bind "PrizeGet", () -> @color "orange"
 
     @rat = Window.rat = Crafty.e 'Rat'
     @rat.attr x: 200, y: 200, w:20, h:20
     @rat.setPathLength 100
+
+    @prize = Crafty.e 'Prize'
+    @prize.attr x: 400, y: 400, w:20, h:20
+    @prize.color 'orange'
 
 # Don't let anything that obstacle cares about get off the screen!
 buildBoundaries = (game) ->

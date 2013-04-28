@@ -3,6 +3,7 @@ Crafty.c 'PlayerCharacter',
     @requires 'Canvas, Color, 2D, Collision'
     @bind "KeyDown", @_keydown
     @bind "EnterFrame", @_enterframe
+    @onHit "Prize", @_onHitPrize
     @frame = 0
     @movedThisTick = false
     @framesPerTick = 60
@@ -85,3 +86,8 @@ Crafty.c 'PlayerCharacter',
     enemy.targetX -= d * Math.cos(ang)
     enemy.targetY -= d * Math.sin(ang)
 
+  _onHitPrize: (hits) ->
+    for hit in hits
+      Crafty.trigger "PrizeGet"
+      #Do something here
+      hit.obj.destroy()
