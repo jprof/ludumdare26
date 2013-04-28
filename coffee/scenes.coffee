@@ -61,7 +61,7 @@ Crafty.scene "main", () ->
     buildBoundaries window
 
     @obj = Crafty.e 'Obstacle'
-    @obj.attr x: 120, y: 50, w:50, h:50
+    @obj.attr x: 275, y: 200, w:50, h:50
     @obj.color 'yellow'
     @obj.bind "PrizeGet", () -> @color "orange"
 

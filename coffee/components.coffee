@@ -84,16 +84,26 @@ Crafty.c "Rat",
   init: () ->
     @requires 'Canvas, Color, Collision, HorizontalPatrol'
     @color 'gray'
+    @onHit "Obstacle", @_onHit
 
+  _hitObstacle: ->
+    console.log "Rat Hit Obstacle, Reversing direction"
+    @_reversePatrol()
 
 
 Crafty.c 'Obstacle',
   init: () ->
     @requires 'Canvas, Color, 2D, Collision'
     @onHit "PlayerCharacter", @_onHit
+    @onHit "Rat", @_onHitRat
     @onHit "Enemy", @_onHit
     @color 'yellow'
     return
+
+  _onHitRat: (rats) ->
+    for rat in rats
+      rat.obj._hitObstacle()
+    @_onHit rats
 
   _onHit: (targets) ->
     for target in targets
@@ -178,7 +188,7 @@ Crafty.c 'Freezable',
 Crafty.c 'HorizontalPatrol',
   HorizontalPatrolStates:
     idleLeft: 0
-    idleRigt: 1
+    idleRight: 1
     patrolLeft: 2 
     patrolRight: 3
 
@@ -218,6 +228,9 @@ Crafty.c 'HorizontalPatrol',
           @patrolState = @HorizontalPatrolStates.idleRight
         else
           @x += @speed        
-
-
-
+  _reversePatrol: ->
+    switch @patrolState
+      when @HorizontalPatrolStates.patrolRight
+        @patrolState = @HorizontalPatrolStates.idleRight
+      when @HorizontalPatrolStates.patrolLeft
+        @patrolState = @HorizontalPatrolStates.idleLeft
