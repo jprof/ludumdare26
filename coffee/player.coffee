@@ -18,7 +18,6 @@ Crafty.c 'PlayerCharacter',
     @onHit "Prize", @_onHitPrize
     @bind 'KeydownActive', @_keydownActive
     @bind 'EnterFrameActive', @_playerEnterframeActive
-    @frame = 0
     @movedThisTick = false
     @framesPerTick = 60
     @maxSpeed = 100
@@ -41,7 +40,7 @@ Crafty.c 'PlayerCharacter',
     @MULT = 5
     if not @movedThisTick
       # 0 < accuracy < 1; higher is better
-      accuracy = Math.abs(@frame % @framesPerTick - @framesPerTick / 2) * 2 / @framesPerTick
+      accuracy = Math.abs(Crafty.frame() % @framesPerTick - @framesPerTick / 2) * 2 / @framesPerTick
       # left:  37 || 65
       # right: 39 || 68
       # up:    38 || 87
@@ -130,11 +129,10 @@ Crafty.c 'PlayerCharacter',
           @playerState = @PlayerStates.idleDown
         when @PlayerStates.walkLeft
           @playerState = @PlayerStates.idleLeft
-    if @frame % @framesPerTick == @framesPerTick / 2
+    if Crafty.frame() % @framesPerTick == @framesPerTick / 2
       @movedThisTick = false
-    if @frame % @framesPerTick == @framesPerTick - 5
+    if Crafty.frame() % @framesPerTick == @framesPerTick - 5
       Crafty.audio.play "drum"
-    @frame++
     return
 
   #push all the enemies away from the player
