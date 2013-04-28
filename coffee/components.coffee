@@ -8,6 +8,8 @@ Crafty.c "Enemy",
     @bind "EnterFrame", @_enterframe
     @speed = .25
     @color 'red'
+    @targetX = 900
+    @targetY = 900
     return
 
   # enemies move every frame
@@ -16,15 +18,36 @@ Crafty.c "Enemy",
     py = Window.playerEntity.getY()
     ang = Math.atan2((py-@y),(px-@x))
     
-    @x += @speed * Math.cos(ang)
-    @y += @speed * Math.sin(ang)
+    @targetX += @speed * Math.cos(ang)
+    @targetY += @speed * Math.sin(ang)
+
+    @x += (@targetX - @x) * .2
+    @y += (@targetY - @y) * .2
     return
+  
+  #position the enemy --use instead of attr
+  position: (x,y) ->
+    @targetX = @x = x
+    @targetY = @y = y
+    return
+
+  easeTo: (x,y) ->
+    @targetX = x
+    @targetY = y
+    return
+
+  getX: () ->
+    return @targetX
+  
+  getY: () ->
+     return @targetY
 
 Crafty.c 'GameMaster',
   init: () ->
     @bind "KeyDown", @_keydown
-
-  _keydown: (e) ->
+  
+   _keydown: (e) ->
+    #alert(e.key)
     switch e.key
       # e
       when 69 then @spawnEnemy()
@@ -32,13 +55,16 @@ Crafty.c 'GameMaster',
       when 79 then @spawnObstacle()
       # r
       when 82 then @spawnRat()
+      # b
+      when 66 then Window.playerEntity.blowAway(1)
 
 
   spawnEnemy: () ->
     randX = 800 * Math.random()
     randY = 600 * Math.random()
     @enemySquare = Crafty.e 'Enemy'
-    @enemySquare.attr x: randX, y:randY, w:20, h:20
+    @enemySquare.attr w:20, h:20
+    @enemySquare.position randX, randY
 
   spawnObstacle: () ->
     randX = 800 * Math.random()
@@ -55,6 +81,9 @@ Crafty.c 'GameMaster',
     @rat = Crafty.e 'Rat'
     @rat.attr x: randX, y: randY, w: 20, h: 20
     @rat.setPathLength pathLength
+
+
+
     
 #
 # Rat Component
