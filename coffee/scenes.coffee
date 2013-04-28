@@ -71,6 +71,9 @@ Crafty.scene "main", () ->
     @prize.attr x: 400, y: 400, w:20, h:20
     @prize.color 'orange'
 
+    @freezer = Crafty.e 'Freezable'
+    @freezer.freezableState = @freezer.FreezableStates.active
+
 # Don't let anything that obstacle cares about get off the screen!
 buildBoundaries = (game) ->
   points = [

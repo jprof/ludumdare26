@@ -1,9 +1,9 @@
 Crafty.c 'PlayerCharacter',
   init: () ->
     @requires 'Canvas, Color, 2D, Collision'
-    @bind "KeyDown", @_keydown
-    @bind "EnterFrame", @_enterframe
     @onHit "Prize", @_onHitPrize
+    @bind 'KeydownActive', @_keydownActive
+    @bind 'EnterFrameActive', @_enterframeActive
     @frame = 0
     @movedThisTick = false
     @framesPerTick = 60
@@ -23,8 +23,7 @@ Crafty.c 'PlayerCharacter',
   getY: () ->
     return @y
 
-  _keydown: (e) ->
-
+  _keydownActive: (e) ->
     #constants for deermining when and how much
     #to push back
     @ACC_BOUND = .8
@@ -47,7 +46,7 @@ Crafty.c 'PlayerCharacter',
       @movedThisTick = true
     return
 
-  _enterframe: () ->
+  _enterframeActive: () ->
     @x += (@targetX - @x) * .2
     @y += (@targetY - @y) * .2
     if @frame % @framesPerTick == 0
