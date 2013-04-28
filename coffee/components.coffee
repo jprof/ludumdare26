@@ -4,8 +4,7 @@
 #
 Crafty.c "Enemy",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision'
-    @bind "EnterFrame", @_enterframe
+    @requires 'Canvas, Color, 2D, Collision, Freezable'
     @speed = .25
     @color 'red'
     @targetX = 900
@@ -13,7 +12,7 @@ Crafty.c "Enemy",
     return
 
   # enemies move every frame
-  _enterframe: () ->
+  _enterframeActive: () ->
     px = Window.playerEntity.getX()
     py = Window.playerEntity.getY()
     ang = Math.atan2((py-@y),(px-@x))
@@ -95,8 +94,7 @@ Crafty.c 'GameMaster',
 
 Crafty.c "Rat",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision'
-    @bind "EnterFrame", @_enterframe
+    @requires 'Canvas, Color, 2D, Collision, Freezable'
     @color 'gray'
     @speed = 1
     @dir = 1
@@ -146,7 +144,7 @@ Crafty.c "Rat",
     return
 
 
-  _enterframe: () ->
+  _enterFrameActive: () ->
     b = @_boundCheck()
 
     switch b
@@ -199,3 +197,26 @@ Crafty.c 'Obstacle',
           target.obj.targetY = @y + @h
 
     return
+
+
+Crafty.c 'Freezable',
+  FreezableStates:
+    frozen : 0
+    idle : 1
+    active : 2
+
+  init: () ->
+    @bind "KeyDown", @_keydown
+    @bind "EnterFrame", @_enterframe
+    @freezableState = @FreezableStates.idle
+    return
+
+  _keydown: (e) ->
+    switch @freezableState
+      when @FreezableStates.idle then @_keydownIdle && @_keydownIdle(e)
+      when @FreezableStates.active then @_keydownActive && @_keydownActive(e)
+
+  _enterframe: () ->
+    switch @freezableState
+      when @FreezableStates.idle then @_enterframeIdle && @_enterframeIdle()
+      when @FreezableStates.active then @_enterframeActive && @_enterframeActive()

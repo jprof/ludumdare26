@@ -66,6 +66,9 @@ Crafty.scene "main", () ->
     @rat.attr x: 200, y: 200, w:20, h:20
     @rat.setPathLength 100
 
+    for e in Crafty 'Freezable'
+      Crafty(e).freezableState = Crafty(e).FreezableStates.active
+
 # Don't let anything that obstacle cares about get off the screen!
 buildBoundaries = (game) ->
   points = [
