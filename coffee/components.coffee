@@ -8,6 +8,8 @@ Crafty.c "Enemy",
     @bind "EnterFrame", @_enterframe
     @speed = .25
     @color 'red'
+    @targetX = 900
+    @targetY = 900
     return
 
   # enemies move every frame
@@ -16,15 +18,29 @@ Crafty.c "Enemy",
     py = Window.playerEntity.getY()
     ang = Math.atan2((py-@y),(px-@x))
     
-    @x += @speed * Math.cos(ang)
-    @y += @speed * Math.sin(ang)
+    @targetX += @speed * Math.cos(ang)
+    @targetY += @speed * Math.sin(ang)
+
+    @x += (@targetX - @x) * .2
+    @y += (@targetY - @y) * .2
     return
   
+  #position the enemy --use instead of attr
+  position: (x,y) ->
+    @targetX = @x = x
+    @targetY = @y = y
+    return
+
+  easeTo: (x,y) ->
+    @targetX = x
+    @targetY = y
+    return
+
   getX: () ->
-    return @x
+    return @targetX
   
   getY: () ->
-     return @y
+     return @targetY
 
 Crafty.c 'GameMaster',
   init: () ->
@@ -47,7 +63,8 @@ Crafty.c 'GameMaster',
     randX = 800 * Math.random()
     randY = 600 * Math.random()
     @enemySquare = Crafty.e 'Enemy'
-    @enemySquare.attr x: randX, y:randY, w:20, h:20
+    @enemySquare.attr w:20, h:20
+    @enemySquare.position randX, randY
 
   spawnObstacle: () ->
     randX = 800 * Math.random()
@@ -72,8 +89,8 @@ Crafty.c 'GameMaster',
     return
 
   _pushEnemy: (e) ->
-    speed = 400
-
+    cap = 100
+    worstCase = 20
     enemy = Crafty(e)
     
     px = Window.playerEntity.getX()
@@ -82,13 +99,14 @@ Crafty.c 'GameMaster',
     ex = enemy.getX()
     ey = enemy.getY()
     
-    d = 10 / (1 + Crafty.math.distance px, py, ex, ey)
+    #d = 10 / (1 + Crafty.math.distance px, py, ex, ey)
+    d = Math.max worstCase, cap - Crafty.math.distance px, py, ex, ey
     console.log "displacement: #{d}"
 
     ang = Math.atan2((py-ey),(px-ex))
     
-    enemy.x -= speed * d * Math.cos(ang)
-    enemy.y -= speed * d * Math.sin(ang)
+    enemy.targetX -= d * Math.cos(ang)
+    enemy.targetY -= d * Math.sin(ang)
 
 
     
