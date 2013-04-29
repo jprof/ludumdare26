@@ -50,80 +50,8 @@ Crafty.scene "title", () ->
 
 Crafty.scene "main", () ->
     console.log "main"
-
     @gameMaster = Crafty.e 'GameMaster'
- 
-    # @player = Window.playerEntity = Crafty.e 'PlayerCharacter'
-
-    # Window.enemies = []
-
-    # @enemySquare = Crafty.e 'Enemy'
-    # randX = Crafty.math.randomInt(0,@STAGE_WIDTH-20)
-    # randY = Crafty.math.randomInt(0,@STAGE_HEIGHT-20)
-    # enemyX = 400
-    # enemyY = 400
-    # @enemySquare.attr x: 400, y:400, targetX:400, targetY:400, w:20, h:20
-    # buildBoundaries window
-
-    # @obj = Crafty.e 'Obstacle'
-    # @obj.attr x: 120, y: 50, w:50, h:50
-    # @obj.color 'yellow'
-    # @obj.bind "PrizeGet", () -> @color "orange"
-
-    # @rat = Window.rat = Crafty.e 'Rat'
-    # @rat.attr x: 200, y: 200, w:20, h:20, left: 200, right: 300
-    # @rat.patrolState = @rat.HorizontalPatrolStates.patrolRight
-
-    # @building = Crafty.e 'Building1'
-    # @building.attr x: 300, y: 100
-
-    # @rat = Window.rat = Crafty.e 'Rat'
-    # @rat.attr x: 200, y: 200, left: 200, right: 300
-    # @rat.patrolState = @rat.HorizontalPatrolStates.patrolRight
-
-    # @prize = Crafty.e 'Prize'
-    # @prize.attr x: 400, y: 400, w:20, h:20
-    # @prize.color 'orange'
-
     @freezer = Crafty.e 'Freezable'
     @freezer.freezableState = @freezer.FreezableStates.active
     Crafty('LevelLoader').reloadLevel()
     return
-
-# Don't let anything that obstacle cares about get off the screen!
-buildBoundaries = (game) ->
-  points = [
-    {
-      # Top
-      x: -game.STAGE_WIDTH / 2,
-      y: -game.STAGE_HEIGHT,
-      w: game.STAGE_WIDTH * 2,
-      h: game.STAGE_HEIGHT
-    },
-    {
-      # Left
-      x: -game.STAGE_WIDTH,
-      y: -game.STAGE_HEIGHT / 2,
-      w: game.STAGE_WIDTH,
-      h: game.STAGE_HEIGHT * 2
-    },
-    {
-      # Right
-      x: game.STAGE_WIDTH,
-      y: -game.STAGE_HEIGHT / 2,
-      w: game.STAGE_WIDTH,
-      h: game.STAGE_HEIGHT * 2
-    },
-    {
-      # Bottom
-      x: -game.STAGE_WIDTH / 2,
-      y: game.STAGE_HEIGHT,
-      w: game.STAGE_WIDTH * 2,
-      h: game.STAGE_HEIGHT
-    }
-  ]
-
-  for point in points
-    wall = Crafty.e "Obstacle"
-    wall.attr point
-  return

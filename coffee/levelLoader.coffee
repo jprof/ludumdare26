@@ -6,10 +6,10 @@ Crafty.c "LevelLoader",
     
     Crafty.scene "currentLevel", () ->
       newLevel = window.levelData[window.currentLevel]
+      Crafty('LevelLoader').loadBorder newLevel["width"], newLevel["height"]
       Crafty('LevelLoader').loadPlayer newLevel["player"]
       Crafty('LevelLoader').loadEnemies newLevel["enemies"]
       Crafty('LevelLoader').loadRats newLevel["rats"]
-      Crafty('LevelLoader').loadObstacles newLevel["obstacles"]
       Crafty('LevelLoader').loadPrize newLevel["prizes"]
       Crafty('LevelLoader').loadBuilding1s newLevel["building1s"]
       Crafty('LevelLoader').loadBuilding2s newLevel["building2s"]
@@ -17,10 +17,10 @@ Crafty.c "LevelLoader",
     Crafty.scene "nextLevel", () ->
       window.currentLevel += 1
       newLevel = window.levelData[window.currentLevel]
+      Crafty('LevelLoader').loadBorder newLevel["width"], newLevel["height"]
       Crafty('LevelLoader').loadPlayer newLevel["player"]
       Crafty('LevelLoader').loadEnemies newLevel["enemies"]
       Crafty('LevelLoader').loadRats newLevel["rats"]
-      Crafty('LevelLoader').loadObstacles newLevel["obstacles"]
       Crafty('LevelLoader').loadPrize newLevel["prizes"]
       Crafty('LevelLoader').loadBuilding1s newLevel["building1s"]
       Crafty('LevelLoader').loadBuilding2s newLevel["building2s"]
@@ -49,13 +49,40 @@ Crafty.c "LevelLoader",
     @text.text "Game Over!"
     return
 
+  loadBorder: (width, height) ->
+    # left
+    x = -100
+    for y in [-100..height+100] by 100
+      building = Crafty.e 'Building1'
+      building.x = x
+      building.y = y
+    # top
+    y = -100
+    for x in [0..width] by 100
+      building = Crafty.e 'Building1'
+      building.x = x
+      building.y = y
+    # right
+    x = width
+    for y in [0..height-100] by 100
+      building = Crafty.e 'Building1'
+      building.x = x
+      building.y = y
+    # bottom
+    y = height
+    for x in [0..width] by 100
+      building = Crafty.e 'Building1'
+      building.x = x
+      building.y = y
+    return
+
   loadPlayer: (data) ->
     console.log "Player"
     console.log data
     @playerHolder = Window.playerEntity = Crafty.e "PlayerCharacter"
     @playerHolder.x = @playerHolder.targetX = data["x"]
     @playerHolder.y = @playerHolder.targetY = data["y"]
-    Crafty.viewport.centerOn @playerHolder, 20
+    Crafty.viewport.clampToEntities = false
     Crafty.viewport.follow @playerHolder, 0, 0
     return
 
@@ -76,17 +103,6 @@ Crafty.c "LevelLoader",
       @ratHolder.attr x:rat["x"], y:rat["y"]
       @ratHolder.attr left:rat["l"], right:rat["r"]
       @ratHolder.patrolState = rat["s"]
-    return
-  
-  loadObstacles: (obstacles) ->
-    console.log "Obstacles"
-    for obst in obstacles
-      console.log obst
-      @obstHolder = Crafty.e "Obstacle"
-      @obstHolder.x = obst["x"]
-      @obstHolder.y = obst["y"]
-      @obstHolder.w = obst["w"]
-      @obstHolder.h = obst["h"]
     return
 
   loadPrize: (prizes) ->
