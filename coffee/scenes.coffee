@@ -7,6 +7,7 @@ DRUM_ASSETS =
 
 ASSETS = ['assets/img/building1.gif',
           'assets/img/building2.gif',
+          'assets/img/potato.gif',
           'assets/img/pigeons.gif',
           'assets/img/rat2.gif',
           'assets/img/gnome.gif'].concat DRUM_ASSETS

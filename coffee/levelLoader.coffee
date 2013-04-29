@@ -91,8 +91,7 @@ Crafty.c "LevelLoader",
     console.log "Prize"
     console.log prize
     @prizeHolder = Crafty.e "Prize"
-    @prizeHolder.attr x: prize["x"], y: prize["y"], w:20, h:20
-    @prizeHolder.color "orange"
+    @prizeHolder.attr x: prize["x"], y: prize["y"]
     return
 
   loadBuilding1s: (building1s) ->

@@ -179,7 +179,8 @@ Crafty.c 'Building2',
 
 Crafty.c 'Prize',
   init: () ->
-    @requires "Canvas, 2D, Color, Collision"
+    @requires "Canvas, 2D, Color, Collision, Sprite, potato"
+    @w = @h = 60
     return
 
 Crafty.c 'Freezable',
