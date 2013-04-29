@@ -15,7 +15,7 @@ Crafty.c 'ChasePlayer',
   init: () ->
     @requires '2D'
     @bind 'EnterFrameActive', @_enterframeActive
-    @speed = .25
+    @speed = 1
     return
 
   # enemies move every frame

@@ -21,8 +21,8 @@ Crafty.c 'PlayerCharacter',
     @bind 'KeydownActive', @_keydownActive
     @bind 'EnterFrameActive', @_playerEnterframeActive
     @movedThisTick = false
-    @framesPerTick = 60
-    @maxSpeed = 100
+    @framesPerTick = 50
+    @maxSpeed = 200
     @w = 70
     @h = 125
     @color 'none'
@@ -38,7 +38,7 @@ Crafty.c 'PlayerCharacter',
   _keydownActive: (e) ->
     #constants for deermining when and how much
     #to push back
-    @ACC_BOUND = .8
+    @ACC_BOUND = .7
     @MULT = 5
     if not @movedThisTick
       # 0 < accuracy < 1; higher is better
@@ -133,7 +133,7 @@ Crafty.c 'PlayerCharacter',
           @playerState = @PlayerStates.idleLeft
     if Crafty.frame() % @framesPerTick == @framesPerTick / 2
       @movedThisTick = false
-    if Crafty.frame() % @framesPerTick == @framesPerTick - 5
+    if Crafty.frame() % @framesPerTick == @framesPerTick - 4
       Crafty.audio.play "drum"
     return
 
