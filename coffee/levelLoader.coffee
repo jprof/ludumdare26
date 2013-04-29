@@ -6,6 +6,13 @@ Crafty.c "LevelLoader",
     
     Crafty.scene "currentLevel", () ->
       newLevel = window.levelData[window.currentLevel]
+      bg = Crafty.e "2D, Canvas, Image"
+      bg.attr
+        x: -Crafty.viewport.width,
+        y: -Crafty.viewport.height,
+        w: Crafty.viewport.width * 2 + newLevel["width"],
+        h: Crafty.viewport.height * 2 + newLevel["height"]
+      bg.image "assets/img/bg2.png", "repeat"
       Crafty('LevelLoader').loadBorder newLevel["width"], newLevel["height"]
       Crafty('LevelLoader').loadPlayer newLevel["player"]
       Crafty('LevelLoader').loadEnemies newLevel["enemies"]
@@ -17,6 +24,13 @@ Crafty.c "LevelLoader",
     Crafty.scene "nextLevel", () ->
       window.currentLevel += 1
       newLevel = window.levelData[window.currentLevel]
+      bg = Crafty.e "2D, Canvas, Image"
+      bg.attr
+        x: -Crafty.viewport.width,
+        y: -Crafty.viewport.height,
+        w: Crafty.viewport.width * 2 + newLevel["width"],
+        h: Crafty.viewport.height * 2 + newLevel["height"]
+      bg.image "assets/img/bg2.png", "repeat"
       Crafty('LevelLoader').loadBorder newLevel["width"], newLevel["height"]
       Crafty('LevelLoader').loadPlayer newLevel["player"]
       Crafty('LevelLoader').loadEnemies newLevel["enemies"]
@@ -42,8 +56,18 @@ Crafty.c "LevelLoader",
     return
 
   endGame: () ->
+    Crafty.viewport.x = Crafty.viewport.y = 0
+    bg = Crafty.e "2D, Canvas, Image"
+    bg.attr
+      x: 0,
+      y: 0,
+      w: Crafty.viewport.width,
+      h: Crafty.viewport.height
+    bg.image "assets/img/bg2.png", "repeat"
     @text = Crafty.e "2D, DOM, Text, Keyboard"
-    @text.attr x: 250, y:300
+    @text.attr
+      x: (Crafty.viewport.width / 2) - 100,
+      y: (Crafty.viewport.height / 2) - 100
     @text.textColor "#FF0000", 1
     @text.css {"font-size": "3em", "font-weight": "bold"}
     @text.text "Game Over!"
