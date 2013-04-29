@@ -13,6 +13,10 @@ window.Game =
       building2: [0, 0]
     })
 
+    Crafty.sprite(40, 40, 'assets/img/pigeons.gif', {
+      pigeon: [0, 0]
+    })
+
     Crafty.sprite(100, 60, 'assets/img/rat2.gif', {
       rat: [0, 0]
     })

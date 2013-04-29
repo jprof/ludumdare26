@@ -7,6 +7,7 @@ DRUM_ASSETS =
 
 ASSETS = ['assets/img/building1.gif',
           'assets/img/building2.gif',
+          'assets/img/pigeons.gif',
           'assets/img/rat2.gif',
           'assets/img/gnome.gif'].concat DRUM_ASSETS
 
@@ -60,7 +61,6 @@ Crafty.scene "main", () ->
     # enemyX = 400
     # enemyY = 400
     # @enemySquare.attr x: 400, y:400, targetX:400, targetY:400, w:20, h:20
-    # @enemySquare.color 'red'
     # buildBoundaries window
 
     # @obj = Crafty.e 'Obstacle'

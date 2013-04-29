@@ -4,9 +4,9 @@
 #
 Crafty.c "Enemy",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision, ChasePlayer'
-    @h = 20
-    @w = 20
+    @requires 'Canvas, Color, 2D, Collision, ChasePlayer, Sprite, pigeon'
+    @h = 40
+    @w = 40
 
 # Behavior to chase after the player
 # You must set x,y,targetX,targetY for the entity 
@@ -16,7 +16,6 @@ Crafty.c 'ChasePlayer',
     @requires '2D'
     @bind 'EnterFrameActive', @_enterframeActive
     @speed = .25
-    @color 'red'
     return
 
   # enemies move every frame
@@ -58,7 +57,7 @@ Crafty.c 'GameMaster',
     randX = 800 * Math.random()
     randY = 600 * Math.random()
     @enemySquare = Crafty.e 'Enemy'
-    @enemySquare.attr x:randX, y:randY, targetX: randX, targetY: randY, w:20, h:20
+    @enemySquare.attr x:randX, y:randY, targetX: randX, targetY: randY
 
   spawnBuilding: () ->
     randX = 800 * Math.random()

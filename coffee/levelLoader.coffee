@@ -64,7 +64,6 @@ Crafty.c "LevelLoader",
       @enemyHolder = Crafty.e "Enemy"
       @enemyHolder.x = @enemyHolder.targetX = enemy["x"]
       @enemyHolder.y = @enemyHolder.targetY = enemy["y"]
-      @enemyHolder.color "red"
     return
   
   loadRats: (rats) ->
