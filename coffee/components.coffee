@@ -47,7 +47,7 @@ Crafty.c 'GameMaster',
       # e
       when 69 then @spawnEnemy()
       # o
-      when 79 then @spawnObstacle()
+      when 79 then @spawnHighrise()
       # r
       when 82 then @spawnRat()
       # b
@@ -60,13 +60,13 @@ Crafty.c 'GameMaster',
     @enemySquare = Crafty.e 'Enemy'
     @enemySquare.attr x:randX, y:randY, targetX: randX, targetY: randY, w:20, h:20
 
-  spawnObstacle: () ->
+  spawnHighrise: () ->
     randX = 800 * Math.random()
     randY = 600 * Math.random()
     randW = 60 * Math.random() + 40
     randH = 60 * Math.random() + 40
-    @obstacle = Crafty.e 'Obstacle'
-    @obstacle.attr x: randX, y: randY, w:randW, h:randH
+    @obstacle = Crafty.e 'Highrise'
+    @obstacle.attr x: randX, y: randY
 
   spawnRat: () ->
     randLeft = 750 * Math.random()
