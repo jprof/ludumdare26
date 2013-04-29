@@ -8,6 +8,7 @@ Crafty.c "Enemy",
     @h = 40
     @w = 40
     @collision new Crafty.polygon [0,0], [40,0], [40,40], [0,40]
+    @z = 2
 
 # Behavior to chase after the player
 # You must set x,y,targetX,targetY for the entity 
@@ -67,7 +68,7 @@ Crafty.c 'GameMaster',
       @obstacle = Crafty.e 'Building1'
     else
       @obstacle = Crafty.e 'Building2'
-    @obstacle.attr x: randX, y: randY
+    @obstacle.attr x: randX, y: randY, z: 1
 
   spawnRat: () ->
     randLeft = 750 * Math.random()
@@ -77,7 +78,7 @@ Crafty.c 'GameMaster',
     randStartX = Crafty.math.randomNumber randLeft + 1, randRight - 1
 
     @rat = Crafty.e 'Rat'
-    @rat.attr x: randStartX, y: randY, left: randLeft, right: randRight
+    @rat.attr x: randStartX, y: randY, z:2, left: randLeft, right: randRight
     if randStartX < randRight
       @rat.patrolState =  @rat.HorizontalPatrolStates.patrolRight
     else 

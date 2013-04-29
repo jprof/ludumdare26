@@ -24,6 +24,7 @@ Crafty.c 'PlayerCharacter',
     @maxSpeed = 100
     @w = 70
     @h = 125
+    @z = 3
     @color 'none'
     @playerState = @PlayerStates.idleDown
     return
