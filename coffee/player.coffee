@@ -1,20 +1,31 @@
 Crafty.c 'PlayerCharacter',
+  PlayerStates:
+    idleUp: 0
+    idleRight: 1
+    idleDown: 2
+    idleLeft: 3
+    dashUp: 4
+    dashRight: 5
+    dashDown: 6
+    dashLeft: 7
+    walkUp: 8
+    walkRight: 9
+    walkDown: 10
+    walkLeft: 11
+
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision'
+    @requires 'Canvas, Color, 2D, Collision, gnome, SpriteAnimation'
     @onHit "Prize", @_onHitPrize
     @bind 'KeydownActive', @_keydownActive
-    @bind 'EnterFrameActive', @_enterframeActive
+    @bind 'EnterFrameActive', @_playerEnterframeActive
     @frame = 0
     @movedThisTick = false
     @framesPerTick = 60
     @maxSpeed = 100
-    @w = 20
-    @h = 20
-    @x = 0
-    @y = 0
-    @targetX = 300
-    @targetY = 300
-    @color 'blue'
+    @w = 70
+    @h = 125
+    @color 'none'
+    @playerState = @PlayerStates.idleDown
     return
 
   getX: () ->
@@ -36,26 +47,93 @@ Crafty.c 'PlayerCharacter',
       # up:    38 || 87
       # down:  40 || 83
       switch e.key
-        when 37 then @targetX -= accuracy * @maxSpeed
-        when 39 then @targetX += accuracy * @maxSpeed
-        when 38 then @targetY -= accuracy * @maxSpeed
-        when 40 then @targetY += accuracy * @maxSpeed
+        when 37
+          @playerState = @PlayerStates.dashLeft
+          @targetX -= accuracy * @maxSpeed
+        when 39
+          @playerState = @PlayerStates.dashRight
+          @targetX += accuracy * @maxSpeed
+        when 38
+          @playerState = @PlayerStates.dashUp
+          @targetY -= accuracy * @maxSpeed
+        when 40
+          @playerState = @PlayerStates.dashDown
+          @targetY += accuracy * @maxSpeed
       if e.key == 37 or e.key == 39 or e.key == 38 or e.key == 40
         console.log "accuracy #{accuracy}"
         @blowAway @MULT * (accuracy - @ACC_BOUND) if accuracy > @ACC_BOUND
       @movedThisTick = true
     return
 
-  _enterframeActive: () ->
-    @x += (@targetX - @x) * .2
-    @y += (@targetY - @y) * .2
-    if @frame % @framesPerTick == 0
-      @color 'blue'
+  _playerEnterframeActive: () ->
+    if @prevPlayerState != @playerState
+      @stop()
+      switch @playerState
+        when @PlayerStates.idleUp
+          @animate('idleUp', 0, 5, 3)
+          @animate('idleUp', 80, -1)
+        when @PlayerStates.idleRight
+          @animate('idleRight', 0, 6, 3)
+          @animate('idleRight', 80, -1)
+        when @PlayerStates.idleDown
+          @animate('idleDown', 0, 4, 3)
+          @animate('idleDown', 80, -1)
+        when @PlayerStates.idleLeft
+          @animate('idleLeft', 0, 7, 3)
+          @animate('idleLeft', 80, -1)
+        when @PlayerStates.dashUp
+          @animate('dashUp', 4, 1, 5)
+          @animate('dashUp', 25, 0)
+        when @PlayerStates.dashRight
+          @animate('dashRight', 4, 2, 5)
+          @animate('dashRight', 25, 0)
+        when @PlayerStates.dashDown
+          @animate('dashDown', 4, 0, 5)
+          @animate('dashDown', 25, 0)
+        when @PlayerStates.dashLeft
+          @animate('dashLeft', 4, 3, 5)
+          @animate('dashLeft', 25, 0)
+        when @PlayerStates.walkUp
+          @animate('walkUp', 0, 1, 3)
+          @animate('walkUp', 8, -1)
+        when @PlayerStates.walkRight
+          @animate('walkRight', 0, 2, 3)
+          @animate('walkRight', 8, -1)
+        when @PlayerStates.walkDown
+          @animate('walkDown', 0, 0, 3)
+          @animate('walkDown', 8, -1)
+        when @PlayerStates.walkLeft
+          @animate('walkLeft', 0, 3, 3)
+          @animate('walkLeft', 8, -1)
+    @prevPlayerState = @playerState
+    @dx = (@targetX - @x) * .2
+    @dy = (@targetY - @y) * .2
+    @x += @dx
+    @y += @dy
+    if Math.abs(@dx) + Math.abs(@dy) < 5
+      switch @playerState
+        when @PlayerStates.dashUp
+          @playerState = @PlayerStates.walkUp
+        when @PlayerStates.dashRight
+          @playerState = @PlayerStates.walkRight
+        when @PlayerStates.dashDown
+          @playerState = @PlayerStates.walkDown
+        when @PlayerStates.dashLeft
+          @playerState = @PlayerStates.walkLeft
+    if Math.abs(@dx) + Math.abs(@dy) < 1
+      switch @playerState
+        when @PlayerStates.walkUp
+          @playerState = @PlayerStates.idleUp
+        when @PlayerStates.walkRight
+          @playerState = @PlayerStates.idleRight
+        when @PlayerStates.walkDown
+          @playerState = @PlayerStates.idleDown
+        when @PlayerStates.walkLeft
+          @playerState = @PlayerStates.idleLeft
     if @frame % @framesPerTick == @framesPerTick / 2
       @movedThisTick = false
     if @frame % @framesPerTick == @framesPerTick - 5
       Crafty.audio.play "drum"
-      @color 'red'
     @frame++
     return
 
