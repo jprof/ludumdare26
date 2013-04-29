@@ -11,7 +11,8 @@ Crafty.c "LevelLoader",
       Crafty('LevelLoader').loadRats newLevel["rats"]
       Crafty('LevelLoader').loadObstacles newLevel["obstacles"]
       Crafty('LevelLoader').loadPrize newLevel["prize"]
-      Crafty('LevelLoader').loadHighrises newLevel["highrises"]
+      Crafty('LevelLoader').loadBuilding1s newLevel["building1s"]
+      Crafty('LevelLoader').loadBuilding2s newLevel["building2s"]
 
     Crafty.scene "nextLevel", () ->
       window.currentLevel += 1
@@ -21,7 +22,8 @@ Crafty.c "LevelLoader",
       Crafty('LevelLoader').loadRats newLevel["rats"]
       Crafty('LevelLoader').loadObstacles newLevel["obstacles"]
       Crafty('LevelLoader').loadPrize newLevel["prize"]
-      Crafty('LevelLoader').loadHighrises newLevel["highrises"]
+      Crafty('LevelLoader').loadBuilding1s newLevel["building1s"]
+      Crafty('LevelLoader').loadBuilding2s newLevel["building2s"]
 
     Crafty.scene "endGame", () ->
       Crafty('LevelLoader').endGame()
@@ -64,7 +66,6 @@ Crafty.c "LevelLoader",
       @enemyHolder = Crafty.e "Enemy"
       @enemyHolder.x = @enemyHolder.targetX = enemy["x"]
       @enemyHolder.y = @enemyHolder.targetY = enemy["y"]
-      @enemyHolder.color "red"
     return
   
   loadRats: (rats) ->
@@ -92,14 +93,21 @@ Crafty.c "LevelLoader",
     console.log "Prize"
     console.log prize
     @prizeHolder = Crafty.e "Prize"
-    @prizeHolder.attr x: prize["x"], y: prize["y"], w:20, h:20
-    @prizeHolder.color "orange"
+    @prizeHolder.attr x: prize["x"], y: prize["y"]
     return
 
-  loadHighrises: (highrises) ->
-    console.log "Highrise"
-    for highrise in highrises
-      console.log highrise
-      @hrHolder = Crafty.e "Highrise"
-      @hrHolder.attr x:highrise["x"], y:highrise["y"]
+  loadBuilding1s: (building1s) ->
+    console.log "Building1"
+    for building1 in building1s
+      console.log building1
+      @hrHolder = Crafty.e "Building1"
+      @hrHolder.attr x:building1["x"], y:building1["y"]
+    return
+
+  loadBuilding2s: (building2s) ->
+    console.log "Building2"
+    for building2 in building2s
+      console.log building2
+      @hrHolder = Crafty.e "Building2"
+      @hrHolder.attr x:building2["x"], y:building2["y"]
     return
