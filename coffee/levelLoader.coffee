@@ -53,6 +53,8 @@ Crafty.c "LevelLoader",
     @playerHolder = Window.playerEntity = Crafty.e "PlayerCharacter"
     @playerHolder.x = @playerHolder.targetX = data["x"]
     @playerHolder.y = @playerHolder.targetY = data["y"]
+    Crafty.viewport.centerOn @playerHolder, 20
+    Crafty.viewport.follow @playerHolder, 0, 0
     return
 
   loadEnemies: (enemies) ->
