@@ -4,9 +4,9 @@
 #
 Crafty.c "Enemy",
   init: () ->
-    @requires 'Canvas, Color, 2D, Collision, ChasePlayer'
-    @h = 20
-    @w = 20
+    @requires 'Canvas, Color, 2D, Collision, ChasePlayer, Sprite, pigeon'
+    @h = 40
+    @w = 40
 
 # Behavior to chase after the player
 # You must set x,y,targetX,targetY for the entity 
@@ -16,7 +16,6 @@ Crafty.c 'ChasePlayer',
     @requires '2D'
     @bind 'EnterFrameActive', @_enterframeActive
     @speed = .25
-    @color 'red'
     return
 
   # enemies move every frame
@@ -47,7 +46,7 @@ Crafty.c 'GameMaster',
       # e
       when 69 then @spawnEnemy()
       # o
-      when 79 then @spawnHighrise()
+      when 79 then @spawnBuilding()
       # r
       when 82 then @spawnRat()
       # b
@@ -58,14 +57,15 @@ Crafty.c 'GameMaster',
     randX = 800 * Math.random()
     randY = 600 * Math.random()
     @enemySquare = Crafty.e 'Enemy'
-    @enemySquare.attr x:randX, y:randY, targetX: randX, targetY: randY, w:20, h:20
+    @enemySquare.attr x:randX, y:randY, targetX: randX, targetY: randY
 
-  spawnHighrise: () ->
+  spawnBuilding: () ->
     randX = 800 * Math.random()
     randY = 600 * Math.random()
-    randW = 60 * Math.random() + 40
-    randH = 60 * Math.random() + 40
-    @obstacle = Crafty.e 'Highrise'
+    if Math.random() > .5
+      @obstacle = Crafty.e 'Building1'
+    else
+      @obstacle = Crafty.e 'Building2'
     @obstacle.attr x: randX, y: randY
 
   spawnRat: () ->
@@ -164,15 +164,25 @@ Crafty.c 'Obstacle',
 
     return
 
-Crafty.c 'Highrise',
+Crafty.c 'Building1',
   init: () ->
-    @requires 'Obstacle, Sprite, highrise'
+    @requires 'Obstacle, Sprite, building1'
     @w = @h = 100
+    @color 'none'
+
+Crafty.c 'Building2',
+  init: () ->
+    @requires 'Obstacle, Sprite, building2'
+    @w = 200
+    @h = 150
     @color 'none'
 
 Crafty.c 'Prize',
   init: () ->
-    @requires "Canvas, 2D, Color, Collision"
+    @requires "Canvas, 2D, Color, Collision, potato, SpriteAnimation"
+    @w = @h = 60
+    @animate 'animate', 0, 0, 1
+    @animate 'animate', 20, -1
     return
 
 Crafty.c 'Freezable',

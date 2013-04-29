@@ -5,7 +5,10 @@ DRUM_ASSETS =
     "assets/audio/ludum_beat.wav"
 ]
 
-ASSETS = ['assets/img/building.gif',
+ASSETS = ['assets/img/building1.gif',
+          'assets/img/building2.gif',
+          'assets/img/potato.gif',
+          'assets/img/pigeons.gif',
           'assets/img/rat2.gif',
           'assets/img/gnome.gif'].concat DRUM_ASSETS
 
@@ -59,7 +62,6 @@ Crafty.scene "main", () ->
     # enemyX = 400
     # enemyY = 400
     # @enemySquare.attr x: 400, y:400, targetX:400, targetY:400, w:20, h:20
-    # @enemySquare.color 'red'
     # buildBoundaries window
 
     # @obj = Crafty.e 'Obstacle'
@@ -71,7 +73,7 @@ Crafty.scene "main", () ->
     # @rat.attr x: 200, y: 200, w:20, h:20, left: 200, right: 300
     # @rat.patrolState = @rat.HorizontalPatrolStates.patrolRight
 
-    # @building = Crafty.e 'Highrise'
+    # @building = Crafty.e 'Building1'
     # @building.attr x: 300, y: 100
 
     # @rat = Window.rat = Crafty.e 'Rat'
