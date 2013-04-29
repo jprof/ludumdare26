@@ -18,6 +18,7 @@ Crafty.c 'PlayerCharacter',
     @onHit "Prize", @_onHitPrize
     @bind 'KeydownActive', @_keydownActive
     @bind 'EnterFrameActive', @_playerEnterframeActive
+    @collision new Crafty.polygon [20,100], [50,100], [70,125], [0,125]
     @movedThisTick = false
     @framesPerTick = 60
     @maxSpeed = 100
