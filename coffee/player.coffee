@@ -16,6 +16,8 @@ Crafty.c 'PlayerCharacter',
   init: () ->
     @requires 'Canvas, Color, 2D, Collision, gnome, SpriteAnimation'
     @onHit "Prize", @_onHitPrize
+    @onHit "Rat", @die
+    @onHit "Enemy", @die
     @bind 'KeydownActive', @_keydownActive
     @bind 'EnterFrameActive', @_playerEnterframeActive
     @movedThisTick = false
@@ -168,3 +170,14 @@ Crafty.c 'PlayerCharacter',
       hit.obj.destroy()
     Crafty("LevelLoader").nextLevel()
     return
+
+  die: () ->
+    @deadPlayer = Crafty.e 'DeadPlayer'
+    @deadPlayer.x = @x - 15
+    @deadPlayer.y = @y + 28
+    @destroy()
+
+Crafty.c 'DeadPlayer',
+  init: () ->
+    @requires 'Canvas, Color, 2D, Collision, deadgnome, Sprite'
+    @timeout window.levelLoader.reloadLevel, 2000
