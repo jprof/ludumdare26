@@ -29,5 +29,9 @@ window.Game =
       gnome: [0, 0]
     })
 
+    Crafty.sprite(98, 95, 'assets/img/gnomedeath.gif', {
+      deadgnome: [0, 0]
+    })
+
     Crafty.scene "load"
 

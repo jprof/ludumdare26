@@ -10,13 +10,14 @@ ASSETS = ['assets/img/building1.gif',
           'assets/img/potato.gif',
           'assets/img/pigeons.gif',
           'assets/img/rat2.gif',
-          'assets/img/gnome.gif'].concat DRUM_ASSETS
+          'assets/img/gnome.gif',
+          'assets/img/gnomedeath.gif'].concat DRUM_ASSETS
 
 Crafty.scene "load", () ->
     console.log "loading start"
 
     Crafty.audio.add "drum", DRUM_ASSETS
-    Crafty.e "LevelLoader"
+    window.levelLoader = Crafty.e "LevelLoader"
     Crafty.load ASSETS, () ->
         console.log "loading done"
         Crafty.scene "title"
