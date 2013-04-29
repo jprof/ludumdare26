@@ -92,7 +92,6 @@ Crafty.c "Rat",
     @h = 60
     @color 'none'
     @bind 'EnterFrameActive', @_ratEnterFrameActive
-    @onHit "Obstacle", @_onHit
 
   _hitObstacle: ->
     @_reversePatrol()
