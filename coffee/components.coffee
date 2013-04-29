@@ -5,7 +5,8 @@
 Crafty.c "Enemy",
   init: () ->
     @requires 'Canvas, Color, 2D, Collision, ChasePlayer'
-
+    @h = 20
+    @w = 20
 
 # Behavior to chase after the player
 # You must set x,y,targetX,targetY for the entity 

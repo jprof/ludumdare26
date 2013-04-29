@@ -11,6 +11,7 @@ Crafty.c "LevelLoader",
       Crafty('LevelLoader').loadRats newLevel["rats"]
       Crafty('LevelLoader').loadObstacles newLevel["obstacles"]
       Crafty('LevelLoader').loadPrize newLevel["prize"]
+      Crafty('LevelLoader').loadHighrises newLevel["highrises"]
 
     Crafty.scene "nextLevel", () ->
       window.currentLevel += 1
@@ -20,6 +21,7 @@ Crafty.c "LevelLoader",
       Crafty('LevelLoader').loadRats newLevel["rats"]
       Crafty('LevelLoader').loadObstacles newLevel["obstacles"]
       Crafty('LevelLoader').loadPrize newLevel["prize"]
+      Crafty('LevelLoader').loadHighrises newLevel["highrises"]
 
     Crafty.scene "endGame", () ->
       Crafty('LevelLoader').endGame()
@@ -60,7 +62,6 @@ Crafty.c "LevelLoader",
       @enemyHolder = Crafty.e "Enemy"
       @enemyHolder.x = @enemyHolder.targetX = enemy["x"]
       @enemyHolder.y = @enemyHolder.targetY = enemy["y"]
-      @enemyHolder.attr w:20, h:20
       @enemyHolder.color "red"
     return
   
@@ -69,7 +70,7 @@ Crafty.c "LevelLoader",
     for rat in rats
       console.log rat
       @ratHolder = Crafty.e "Rat"
-      @ratHolder.attr x:rat["x"], y:rat["y"], w:20, h:20
+      @ratHolder.attr x:rat["x"], y:rat["y"]
       @ratHolder.attr left:rat["l"], right:rat["r"]
       @ratHolder.patrolState = rat["s"]
     return
@@ -91,4 +92,12 @@ Crafty.c "LevelLoader",
     @prizeHolder = Crafty.e "Prize"
     @prizeHolder.attr x: prize["x"], y: prize["y"], w:20, h:20
     @prizeHolder.color "orange"
+    return
+
+  loadHighrises: (highrises) ->
+    console.log "Highrise"
+    for highrise in highrises
+      console.log highrise
+      @hrHolder = Crafty.e "Highrise"
+      @hrHolder.attr x:highrise["x"], y:highrise["y"]
     return
