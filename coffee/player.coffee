@@ -166,9 +166,10 @@ Crafty.c 'PlayerCharacter',
   _onHitPrize: (hits) ->
     for hit in hits
       Crafty.trigger "PrizeGet"
-      #Do something here
       hit.obj.destroy()
-    Crafty("LevelLoader").nextLevel()
+      prizes = Crafty "Prize"
+      if prizes.length == 0
+        Crafty("LevelLoader").nextLevel()
     return
 
   die: () ->
