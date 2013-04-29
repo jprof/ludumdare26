@@ -10,7 +10,7 @@ Crafty.c "LevelLoader",
       Crafty('LevelLoader').loadEnemies newLevel["enemies"]
       Crafty('LevelLoader').loadRats newLevel["rats"]
       Crafty('LevelLoader').loadObstacles newLevel["obstacles"]
-      Crafty('LevelLoader').loadPrize newLevel["prize"]
+      Crafty('LevelLoader').loadPrize newLevel["prizes"]
       Crafty('LevelLoader').loadBuilding1s newLevel["building1s"]
       Crafty('LevelLoader').loadBuilding2s newLevel["building2s"]
 
@@ -21,7 +21,7 @@ Crafty.c "LevelLoader",
       Crafty('LevelLoader').loadEnemies newLevel["enemies"]
       Crafty('LevelLoader').loadRats newLevel["rats"]
       Crafty('LevelLoader').loadObstacles newLevel["obstacles"]
-      Crafty('LevelLoader').loadPrize newLevel["prize"]
+      Crafty('LevelLoader').loadPrize newLevel["prizes"]
       Crafty('LevelLoader').loadBuilding1s newLevel["building1s"]
       Crafty('LevelLoader').loadBuilding2s newLevel["building2s"]
 
@@ -89,11 +89,12 @@ Crafty.c "LevelLoader",
       @obstHolder.h = obst["h"]
     return
 
-  loadPrize: (prize) ->
-    console.log "Prize"
-    console.log prize
-    @prizeHolder = Crafty.e "Prize"
-    @prizeHolder.attr x: prize["x"], y: prize["y"]
+  loadPrize: (prizes) ->
+    for prize in prizes
+      console.log "Prize"
+      console.log prize
+      @prizeHolder = Crafty.e "Prize"
+      @prizeHolder.attr x: prize["x"], y: prize["y"]
     return
 
   loadBuilding1s: (building1s) ->
