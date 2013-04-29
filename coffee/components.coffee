@@ -87,7 +87,7 @@ Crafty.c 'GameMaster',
 # Rat Component
 Crafty.c "Rat",
   init: () ->
-    @requires 'Canvas, Color, Collision, HorizontalPatrol, ratRight1, SpriteAnimation'
+    @requires 'Canvas, Color, Collision, HorizontalPatrol, rat, SpriteAnimation'
     @w = 100
     @h = 60
     @color 'none'

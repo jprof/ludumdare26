@@ -6,7 +6,8 @@ DRUM_ASSETS =
 ]
 
 ASSETS = ['assets/img/building.gif',
-          'assets/img/rat2.gif'].concat DRUM_ASSETS
+          'assets/img/rat2.gif',
+          'assets/img/gnome.gif'].concat DRUM_ASSETS
 
 Crafty.scene "load", () ->
     console.log "loading start"
