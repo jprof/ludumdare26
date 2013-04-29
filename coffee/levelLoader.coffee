@@ -52,7 +52,7 @@ Crafty.c "LevelLoader",
   loadBorder: (width, height) ->
     # left
     x = -100
-    for y in [-100..height+100] by 100
+    for y in [-100..height] by 100
       building = Crafty.e 'Building1'
       building.x = x
       building.y = y
