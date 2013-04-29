@@ -7,6 +7,8 @@ Crafty.c "Enemy",
     @requires 'Canvas, Color, 2D, Collision, ChasePlayer, Sprite, pigeon'
     @h = 40
     @w = 40
+    @collision new Crafty.polygon [0,0], [40,0], [40,40], [0,40]
+    @z = 2
 
 # Behavior to chase after the player
 # You must set x,y,targetX,targetY for the entity 
@@ -66,7 +68,7 @@ Crafty.c 'GameMaster',
       @obstacle = Crafty.e 'Building1'
     else
       @obstacle = Crafty.e 'Building2'
-    @obstacle.attr x: randX, y: randY
+    @obstacle.attr x: randX, y: randY, z: 1
 
   spawnRat: () ->
     randLeft = 750 * Math.random()
@@ -76,7 +78,7 @@ Crafty.c 'GameMaster',
     randStartX = Crafty.math.randomNumber randLeft + 1, randRight - 1
 
     @rat = Crafty.e 'Rat'
-    @rat.attr x: randStartX, y: randY, left: randLeft, right: randRight
+    @rat.attr x: randStartX, y: randY, z:2, left: randLeft, right: randRight
     if randStartX < randRight
       @rat.patrolState =  @rat.HorizontalPatrolStates.patrolRight
     else 
@@ -90,6 +92,7 @@ Crafty.c "Rat",
     @requires 'Canvas, Color, Collision, HorizontalPatrol, rat, SpriteAnimation'
     @w = 100
     @h = 60
+    @collision new Crafty.polygon [20,15], [80,15], [80, 55], [20,55]
     @color 'none'
     @bind 'EnterFrameActive', @_ratEnterFrameActive
 
@@ -168,6 +171,7 @@ Crafty.c 'Building1',
   init: () ->
     @requires 'Obstacle, Sprite, building1'
     @w = @h = 100
+    @collision new Crafty.polygon [10,75], [95,75], [95,100], [10,100]
     @color 'none'
 
 Crafty.c 'Building2',
@@ -175,12 +179,14 @@ Crafty.c 'Building2',
     @requires 'Obstacle, Sprite, building2'
     @w = 200
     @h = 150
+    @collision new Crafty.polygon [15,120], [190,120], [190, 150], [15,150]
     @color 'none'
 
 Crafty.c 'Prize',
   init: () ->
     @requires "Canvas, 2D, Color, Collision, potato, SpriteAnimation"
     @w = @h = 60
+    @collision new Crafty.polygon [10,10], [50,10], [50, 55], [10,55]
     @animate 'animate', 0, 0, 1
     @animate 'animate', 20, -1
     return

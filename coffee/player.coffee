@@ -20,11 +20,13 @@ Crafty.c 'PlayerCharacter',
     @onHit "Enemy", @die
     @bind 'KeydownActive', @_keydownActive
     @bind 'EnterFrameActive', @_playerEnterframeActive
+    @collision new Crafty.polygon [20,100], [50,100], [70,125], [0,125]
     @movedThisTick = false
     @framesPerTick = 50
     @maxSpeed = 200
     @w = 70
     @h = 125
+    @z = 3
     @color 'none'
     @playerState = @PlayerStates.idleDown
     return
