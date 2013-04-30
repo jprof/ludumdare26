@@ -51,6 +51,8 @@ Crafty.c 'GameMaster',
       when 82 then @spawnRat()
       # b
       when 66 then Window.playerEntity.blowAway(1)
+      # n
+      when 78 then Crafty("LevelLoader").nextLevel()
 
 
   spawnEnemy: () ->
