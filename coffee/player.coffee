@@ -109,8 +109,8 @@ Crafty.c 'PlayerCharacter',
           @animate('walkLeft', 0, 3, 3)
           @animate('walkLeft', 8, -1)
     @prevPlayerState = @playerState
-    @dx = (@targetX - @x) * .2
-    @dy = (@targetY - @y) * .2
+    @dx = (@targetX - @x) * .1
+    @dy = (@targetY - @y) * .1
     @x += @dx
     @y += @dy
     if Math.abs(@dx) + Math.abs(@dy) < 5
