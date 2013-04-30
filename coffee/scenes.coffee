@@ -12,6 +12,7 @@ ASSETS = ['assets/img/building1.gif',
           'assets/img/rat2.gif',
           'assets/img/gnome.gif',
           'assets/img/gnomedeath.gif',
+          'assets/img/bg2.png',
           'assets/img/metrognome.gif'].concat DRUM_ASSETS
 
 Crafty.scene "load", () ->
