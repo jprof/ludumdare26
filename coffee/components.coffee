@@ -132,38 +132,66 @@ Crafty.c 'Obstacle',
     @_onHit rats
 
   _onHit: (targets) ->
+    minX = 10000000
+    maxX = -10000000
+
+    minY = 10000000
+    maxY = -10000000
+
+    for point in @map.points
+       minX = Math.min minX, point[0]
+       maxX = Math.max maxX, point[0]
+
+       minY = Math.min minY, point[1]
+       maxY = Math.max maxY, point[1]
+
+    objX = minX
+    objY = minY
+    objW = maxX - minX
+    objH = maxY - minY
+
+    objCenterX = (maxX + minX)/2
+    objCenterY = (maxY + minY)/2
+
     for target in targets
-      playerX = target.obj.x
-      playerY = target.obj.y
-      playerW = target.obj.w
-      playerH = target.obj.h
+      minX = 10000000
+      maxX = -10000000
+
+      minY = 10000000
+      maxY = -10000000
+
+      for point in target.obj.map.points
+         minX = Math.min minX, point[0]
+         maxX = Math.max maxX, point[0]
+
+         minY = Math.min minY, point[1]
+         maxY = Math.max maxY, point[1]
+
+      playerX = minX
+      playerY = minY
+      playerW = maxX - minX
+      playerH = maxY - minY
 
       playerCenterX = playerX + playerW/2
       playerCenterY = playerY + playerH/2
-      objCenterX = @x + @w/2
-      objCenterY = @y + @h/2
 
       dx = playerCenterX - objCenterX
       dy = playerCenterY - objCenterY
 
-      if playerCenterY < @h / @w * (playerCenterX - objCenterX) + objCenterY
-        if playerCenterY < -@h / @w * (playerCenterX - objCenterX) + objCenterY
+      if playerCenterY < objH / objW * (playerCenterX - objCenterX) + objCenterY
+        if playerCenterY < -objH / objW * (playerCenterX - objCenterX) + objCenterY
           # top
-          target.obj.y = @y - playerH
-          target.obj.targetY = @y - playerH
+          target.obj.y = target.obj.targetY = objY - (playerY + playerH - target.obj.y)
         else
           # right
-          target.obj.x = @x + @w
-          target.obj.targetX = @x + @w
+          target.obj.x = target.obj.targetX = objX + objW - (playerX - target.obj.x)
       else
-        if playerCenterY < -@h / @w * (playerCenterX - objCenterX) + objCenterY
+        if playerCenterY < -objH / objW * (playerCenterX - objCenterX) + objCenterY
           # left
-          target.obj.x = @x - playerW
-          target.obj.targetX = @x - playerW
+          target.obj.x = target.obj.targetX = objX - (playerX + playerW - target.obj.x)
         else
           # bottom
-          target.obj.y = @y + @h
-          target.obj.targetY = @y + @h
+          target.obj.y = target.obj.targetY = objY + objH - (playerY - target.obj.y)
 
     return
 
