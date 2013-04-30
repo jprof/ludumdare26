@@ -210,6 +210,13 @@ Crafty.c 'Building2',
     @collision new Crafty.polygon [15,120], [190,120], [190, 150], [15,150]
     @color 'none'
 
+Crafty.c 'Border',
+  init: () ->
+    @requires 'Obstacle, Sprite, building1'
+    @w = @h = 100
+    @collision new Crafty.polygon [0,0], [100,0], [100,100], [0,100]
+    @color 'none'
+
 Crafty.c 'Prize',
   init: () ->
     @requires "Canvas, 2D, Color, Collision, potato, SpriteAnimation"

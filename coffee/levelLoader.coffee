@@ -53,25 +53,25 @@ Crafty.c "LevelLoader",
     # left
     x = -100
     for y in [-100..height] by 100
-      building = Crafty.e 'Building1'
+      building = Crafty.e 'Border'
       building.x = x
       building.y = y
     # top
     y = -100
     for x in [0..width] by 100
-      building = Crafty.e 'Building1'
+      building = Crafty.e 'Border'
       building.x = x
       building.y = y
     # right
     x = width
     for y in [0..height-100] by 100
-      building = Crafty.e 'Building1'
+      building = Crafty.e 'Border'
       building.x = x
       building.y = y
     # bottom
     y = height
     for x in [0..width] by 100
-      building = Crafty.e 'Building1'
+      building = Crafty.e 'Border'
       building.x = x
       building.y = y
     return
