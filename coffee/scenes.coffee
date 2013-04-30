@@ -47,7 +47,6 @@ Crafty.scene "title", () ->
 
 Crafty.scene "main", () ->
     console.log "main"
-    @gameMaster = Crafty.e 'GameMaster'
     @freezer = Crafty.e 'Freezable'
     @freezer.freezableState = @freezer.FreezableStates.active
     Crafty('LevelLoader').reloadLevel()
