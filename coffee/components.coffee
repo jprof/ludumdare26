@@ -8,7 +8,6 @@ Crafty.c "Enemy",
     @h = 40
     @w = 40
     @collision new Crafty.polygon [0,0], [40,0], [40,40], [0,40]
-    @z = 2
 
 # Behavior to chase after the player
 # You must set x,y,targetX,targetY for the entity 
@@ -35,6 +34,7 @@ Crafty.c 'ChasePlayer',
 
     @x += (@targetX - @x) * .2
     @y += (@targetY - @y) * .2
+    @z = @y + @h
     return
   
 

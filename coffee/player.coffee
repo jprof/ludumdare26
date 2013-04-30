@@ -113,6 +113,7 @@ Crafty.c 'PlayerCharacter',
     @dy = (@targetY - @y) * .1
     @x += @dx
     @y += @dy
+    @z = @y + @h
     if Math.abs(@dx) + Math.abs(@dy) < 5
       switch @playerState
         when @PlayerStates.dashUp
@@ -178,6 +179,7 @@ Crafty.c 'PlayerCharacter',
     @deadPlayer = Crafty.e 'DeadPlayer'
     @deadPlayer.x = @x - 15
     @deadPlayer.y = @y + 28
+    @deadPlayer.z = @y + @h
     @destroy()
 
 Crafty.c 'DeadPlayer',
