@@ -221,7 +221,7 @@ Crafty.c 'Prize',
   init: () ->
     @requires "Canvas, 2D, Color, Collision, potato, SpriteAnimation"
     @w = @h = 60
-    @collision new Crafty.polygon [10,10], [50,10], [50, 55], [10,55]
+    @collision new Crafty.polygon [0,0], [60,0], [60,80], [0,80]
     @animate 'animate', 0, 0, 1
     @animate 'animate', 20, -1
     return
