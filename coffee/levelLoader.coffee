@@ -77,27 +77,31 @@ Crafty.c "LevelLoader",
     # left
     x = -100
     for y in [-100..height] by 100
-      building = Crafty.e 'Building1'
+      building = Crafty.e 'Border'
       building.x = x
       building.y = y
+      building.z = y + building.h
     # top
     y = -100
     for x in [0..width] by 100
-      building = Crafty.e 'Building1'
+      building = Crafty.e 'Border'
       building.x = x
       building.y = y
+      building.z = y + building.h
     # right
     x = width
     for y in [0..height-100] by 100
-      building = Crafty.e 'Building1'
+      building = Crafty.e 'Border'
       building.x = x
       building.y = y
+      building.z = y + building.h
     # bottom
     y = height
     for x in [0..width] by 100
-      building = Crafty.e 'Building1'
+      building = Crafty.e 'Border'
       building.x = x
       building.y = y
+      building.z = y + building.h
     return
 
   loadPlayer: (data) ->
@@ -106,6 +110,7 @@ Crafty.c "LevelLoader",
     @playerHolder = Window.playerEntity = Crafty.e "PlayerCharacter"
     @playerHolder.x = @playerHolder.targetX = data["x"]
     @playerHolder.y = @playerHolder.targetY = data["y"]
+    @playerHolder.z = @playerHolder.y + @playerHolder.h
     Crafty.viewport.clampToEntities = false
     Crafty.viewport.follow @playerHolder, 0, 0
     return
@@ -117,6 +122,7 @@ Crafty.c "LevelLoader",
       @enemyHolder = Crafty.e "Enemy"
       @enemyHolder.x = @enemyHolder.targetX = enemy["x"]
       @enemyHolder.y = @enemyHolder.targetY = enemy["y"]
+      @enemyHolder.z = @enemyHolder.y + @enemyHolder.h
     return
   
   loadRats: (rats) ->
@@ -125,6 +131,7 @@ Crafty.c "LevelLoader",
       console.log rat
       @ratHolder = Crafty.e "Rat"
       @ratHolder.attr x:rat["x"], y:rat["y"]
+      @ratHolder.z = @ratHolder.y + @ratHolder.h
       @ratHolder.attr left:rat["l"], right:rat["r"]
       @ratHolder.patrolState = rat["s"]
     return
@@ -135,6 +142,7 @@ Crafty.c "LevelLoader",
       console.log prize
       @prizeHolder = Crafty.e "Prize"
       @prizeHolder.attr x: prize["x"], y: prize["y"]
+      @prizeHolder.z = @prizeHolder.y + @prizeHolder.h
     return
 
   loadBuilding1s: (building1s) ->
@@ -143,6 +151,7 @@ Crafty.c "LevelLoader",
       console.log building1
       @hrHolder = Crafty.e "Building1"
       @hrHolder.attr x:building1["x"], y:building1["y"]
+      @hrHolder.z = @hrHolder.y + @hrHolder.h
     return
 
   loadBuilding2s: (building2s) ->
@@ -151,4 +160,5 @@ Crafty.c "LevelLoader",
       console.log building2
       @hrHolder = Crafty.e "Building2"
       @hrHolder.attr x:building2["x"], y:building2["y"]
+      @hrHolder.z = @hrHolder.y + @hrHolder.h
     return

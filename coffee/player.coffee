@@ -20,11 +20,13 @@ Crafty.c 'PlayerCharacter',
     @onHit "Enemy", @die
     @bind 'KeydownActive', @_keydownActive
     @bind 'EnterFrameActive', @_playerEnterframeActive
+    @collision new Crafty.polygon [20,90], [50,90], [50,125], [20,125]
     @movedThisTick = false
     @framesPerTick = 50
     @maxSpeed = 200
     @w = 70
     @h = 125
+    @z = 3
     @color 'none'
     @playerState = @PlayerStates.idleDown
     return
@@ -107,10 +109,11 @@ Crafty.c 'PlayerCharacter',
           @animate('walkLeft', 0, 3, 3)
           @animate('walkLeft', 8, -1)
     @prevPlayerState = @playerState
-    @dx = (@targetX - @x) * .2
-    @dy = (@targetY - @y) * .2
+    @dx = (@targetX - @x) * .1
+    @dy = (@targetY - @y) * .1
     @x += @dx
     @y += @dy
+    @z = @y + @h
     if Math.abs(@dx) + Math.abs(@dy) < 5
       switch @playerState
         when @PlayerStates.dashUp
@@ -176,6 +179,7 @@ Crafty.c 'PlayerCharacter',
     @deadPlayer = Crafty.e 'DeadPlayer'
     @deadPlayer.x = @x - 15
     @deadPlayer.y = @y + 28
+    @deadPlayer.z = @y + @h
     @destroy()
 
 Crafty.c 'DeadPlayer',

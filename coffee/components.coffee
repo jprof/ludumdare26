@@ -7,6 +7,7 @@ Crafty.c "Enemy",
     @requires 'Canvas, Color, 2D, Collision, ChasePlayer, Sprite, pigeon'
     @h = 40
     @w = 40
+    @collision new Crafty.polygon [0,0], [40,0], [40,40], [0,40]
 
 # Behavior to chase after the player
 # You must set x,y,targetX,targetY for the entity 
@@ -33,6 +34,7 @@ Crafty.c 'ChasePlayer',
 
     @x += (@targetX - @x) * .2
     @y += (@targetY - @y) * .2
+    @z = @y + @h
     return
   
 
@@ -68,7 +70,7 @@ Crafty.c 'GameMaster',
       @obstacle = Crafty.e 'Building1'
     else
       @obstacle = Crafty.e 'Building2'
-    @obstacle.attr x: randX, y: randY
+    @obstacle.attr x: randX, y: randY, z: 1
 
   spawnRat: () ->
     randLeft = 750 * Math.random()
@@ -78,7 +80,7 @@ Crafty.c 'GameMaster',
     randStartX = Crafty.math.randomNumber randLeft + 1, randRight - 1
 
     @rat = Crafty.e 'Rat'
-    @rat.attr x: randStartX, y: randY, left: randLeft, right: randRight
+    @rat.attr x: randStartX, y: randY, z:2, left: randLeft, right: randRight
     if randStartX < randRight
       @rat.patrolState =  @rat.HorizontalPatrolStates.patrolRight
     else 
@@ -92,6 +94,7 @@ Crafty.c "Rat",
     @requires 'Canvas, Color, Collision, HorizontalPatrol, rat, SpriteAnimation'
     @w = 100
     @h = 60
+    @collision new Crafty.polygon [20,15], [80,15], [80, 55], [20,55]
     @color 'none'
     @bind 'EnterFrameActive', @_ratEnterFrameActive
 
@@ -131,38 +134,66 @@ Crafty.c 'Obstacle',
     @_onHit rats
 
   _onHit: (targets) ->
+    minX = 10000000
+    maxX = -10000000
+
+    minY = 10000000
+    maxY = -10000000
+
+    for point in @map.points
+       minX = Math.min minX, point[0]
+       maxX = Math.max maxX, point[0]
+
+       minY = Math.min minY, point[1]
+       maxY = Math.max maxY, point[1]
+
+    objX = minX
+    objY = minY
+    objW = maxX - minX
+    objH = maxY - minY
+
+    objCenterX = (maxX + minX)/2
+    objCenterY = (maxY + minY)/2
+
     for target in targets
-      playerX = target.obj.x
-      playerY = target.obj.y
-      playerW = target.obj.w
-      playerH = target.obj.h
+      minX = 10000000
+      maxX = -10000000
+
+      minY = 10000000
+      maxY = -10000000
+
+      for point in target.obj.map.points
+         minX = Math.min minX, point[0]
+         maxX = Math.max maxX, point[0]
+
+         minY = Math.min minY, point[1]
+         maxY = Math.max maxY, point[1]
+
+      playerX = minX
+      playerY = minY
+      playerW = maxX - minX
+      playerH = maxY - minY
 
       playerCenterX = playerX + playerW/2
       playerCenterY = playerY + playerH/2
-      objCenterX = @x + @w/2
-      objCenterY = @y + @h/2
 
       dx = playerCenterX - objCenterX
       dy = playerCenterY - objCenterY
 
-      if playerCenterY < @h / @w * (playerCenterX - objCenterX) + objCenterY
-        if playerCenterY < -@h / @w * (playerCenterX - objCenterX) + objCenterY
+      if playerCenterY < objH / objW * (playerCenterX - objCenterX) + objCenterY
+        if playerCenterY < -objH / objW * (playerCenterX - objCenterX) + objCenterY
           # top
-          target.obj.y = @y - playerH
-          target.obj.targetY = @y - playerH
+          target.obj.y = target.obj.targetY = objY - (playerY + playerH - target.obj.y)
         else
           # right
-          target.obj.x = @x + @w
-          target.obj.targetX = @x + @w
+          target.obj.x = target.obj.targetX = objX + objW - (playerX - target.obj.x)
       else
-        if playerCenterY < -@h / @w * (playerCenterX - objCenterX) + objCenterY
+        if playerCenterY < -objH / objW * (playerCenterX - objCenterX) + objCenterY
           # left
-          target.obj.x = @x - playerW
-          target.obj.targetX = @x - playerW
+          target.obj.x = target.obj.targetX = objX - (playerX + playerW - target.obj.x)
         else
           # bottom
-          target.obj.y = @y + @h
-          target.obj.targetY = @y + @h
+          target.obj.y = target.obj.targetY = objY + objH - (playerY - target.obj.y)
 
     return
 
@@ -170,6 +201,7 @@ Crafty.c 'Building1',
   init: () ->
     @requires 'Obstacle, Sprite, building1'
     @w = @h = 100
+    @collision new Crafty.polygon [10,65], [95,65], [95,100], [10,100]
     @color 'none'
 
 Crafty.c 'Building2',
@@ -177,12 +209,21 @@ Crafty.c 'Building2',
     @requires 'Obstacle, Sprite, building2'
     @w = 200
     @h = 150
+    @collision new Crafty.polygon [15,120], [190,120], [190, 150], [15,150]
+    @color 'none'
+
+Crafty.c 'Border',
+  init: () ->
+    @requires 'Obstacle, Sprite, building1'
+    @w = @h = 100
+    @collision new Crafty.polygon [0,0], [100,0], [100,100], [0,100]
     @color 'none'
 
 Crafty.c 'Prize',
   init: () ->
     @requires "Canvas, 2D, Color, Collision, potato, SpriteAnimation"
     @w = @h = 60
+    @collision new Crafty.polygon [0,0], [60,0], [60,80], [0,80]
     @animate 'animate', 0, 0, 1
     @animate 'animate', 20, -1
     return
