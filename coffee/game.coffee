@@ -3,7 +3,7 @@ window.Game =
     @STAGE_WIDTH = 800
     @STAGE_HEIGHT = 600
     Crafty.init @STAGE_WIDTH, @STAGE_HEIGHT
-    Crafty.background 'green'
+    Crafty.background '#f0e9e3'
 
     Crafty.sprite(100, 100, 'assets/img/building1.gif', {
       building1: [0, 0]
@@ -31,6 +31,10 @@ window.Game =
 
     Crafty.sprite(98, 95, 'assets/img/gnomedeath.gif', {
       deadgnome: [0, 0]
+    })
+
+    Crafty.sprite(800, 600, 'assets/img/metrognome.gif', {
+      loadimage: [0, 0]
     })
 
     Crafty.scene "load"
