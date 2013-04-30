@@ -199,7 +199,7 @@ Crafty.c 'Building1',
   init: () ->
     @requires 'Obstacle, Sprite, building1'
     @w = @h = 100
-    @collision new Crafty.polygon [10,75], [95,75], [95,100], [10,100]
+    @collision new Crafty.polygon [10,65], [95,65], [95,100], [10,100]
     @color 'none'
 
 Crafty.c 'Building2',

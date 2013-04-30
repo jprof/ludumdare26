@@ -20,7 +20,7 @@ Crafty.c 'PlayerCharacter',
     @onHit "Enemy", @die
     @bind 'KeydownActive', @_keydownActive
     @bind 'EnterFrameActive', @_playerEnterframeActive
-    @collision new Crafty.polygon [20,100], [50,100], [70,125], [0,125]
+    @collision new Crafty.polygon [20,90], [50,90], [50,125], [20,125]
     @movedThisTick = false
     @framesPerTick = 50
     @maxSpeed = 200
