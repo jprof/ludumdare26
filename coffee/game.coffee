@@ -33,5 +33,9 @@ window.Game =
       deadgnome: [0, 0]
     })
 
+    Crafty.sprite(800, 600, 'assets/img/metrognome.gif', {
+      loadimage: [0, 0]
+    })
+
     Crafty.scene "load"
 

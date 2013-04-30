@@ -11,7 +11,8 @@ ASSETS = ['assets/img/building1.gif',
           'assets/img/pigeons.gif',
           'assets/img/rat2.gif',
           'assets/img/gnome.gif',
-          'assets/img/gnomedeath.gif'].concat DRUM_ASSETS
+          'assets/img/gnomedeath.gif',
+          'assets/img/metrognome.gif'].concat DRUM_ASSETS
 
 Crafty.scene "load", () ->
     console.log "loading start"
@@ -31,17 +32,18 @@ Crafty.scene "title", () ->
 
     displayTitle = () ->
       console.log "displayTitle"
-      @text = Crafty.e "2D, DOM, Text, Keyboard"
-      @text.attr { x: 250, y: 300 }
-      @text.textColor "#FF0000", 1
-      @text.css { "font-size": "3em", "font-weight": "bold" }
-      @text.text "MetroGnome!"
-
+      #@text = Crafty.e "2D, DOM, Text, Keyboard"
+      #@text.attr { x: 250, y: 300 }
+      #@text.textColor "#FF0000", 1
+      #@text.css { "font-size": "3em", "font-weight": "bold" }
+      #@text.text "MetroGnome!"
+      @logo = Crafty.e "2D, DOM, Sprite, Keyboard, loadimage"
+        
       # if no keyboard input is received, proceed to main in 10 seconds.
       proceedTimeout = setTimeout proceedToMain, 10000
 
       # if keyboard input is received, clear the timeout and proceed to main
-      @text.bind 'KeyDown', () ->
+      @logo.bind 'KeyDown', () ->
        console.log "KeyDown"
        clearTimeout proceedTimeout
        proceedToMain()
